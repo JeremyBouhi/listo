@@ -5,11 +5,13 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "author": "Jeremy Bouhi",
   "license": "ISC",
   "dependencies": {
+    "@angular/platform-server": "^7.2.0",
+    "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.2",
     "compression": "^1.7.3",
@@ -21,12 +23,15 @@
     "express-session": "^1.15.6",
     "express-status-monitor": "^1.2.3",
     "express-validator": "^5.3.1",
+    "html": "^1.0.0",
     "lusca": "^1.6.1",
+    "method-override": "^3.0.0",
     "mongoose": "^5.4.2",
     "morgan": "^1.9.1",
     "node-sass-middleware": "^0.11.0",
     "passport": "^0.4.0",
     "path": "^0.12.7",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "ts-loader": "^5.3.3"
   }
 }
