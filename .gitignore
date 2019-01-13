@@ -1,0 +1,8 @@
+# Ignore env file
+.env
+
+# Ignore the dist folder (the compiling folder)
+dist
+
+# Ignore Node Modules
+node_modules

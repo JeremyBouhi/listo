@@ -1,0 +1,1 @@
+var Trip = require('./../models/trip');
