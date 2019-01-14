@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel . --ignore node_modules,dist -d dist",
+    "heroku-postbuild": "npm install",
     "start": "npm run build && nodemon dist/app.js"
   },
   "author": "La Team de Ratpi",
