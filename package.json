@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel . --ignore node_modules,dist -d dist",
+    "server": "nodemon app.js --exec babel-node",
     "heroku-postbuild": "npm install",
-    "start": "npm run build && nodemon dist/app.js"
+    "start": "babel-node app.js"
   },
   "author": "La Team de Ratpi",
   "license": "ISC",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.9"
   }
 }

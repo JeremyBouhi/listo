@@ -6,6 +6,3 @@ dist
 
 # Ignore Node Modules
 node_modules
-
-# Ignore lock files
-package-lock.json
