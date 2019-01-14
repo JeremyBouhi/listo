@@ -1,1 +1,1 @@
-web:node dist/app.js
+web: babel . --ignore node_modules -d dist && node dist/app.js
