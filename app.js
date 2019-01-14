@@ -34,6 +34,7 @@ var chatRoutes = require(path.join(__dirname, 'routes', 'chat'));
 // =============================================================================
 app.get('/', (req, res) => {
     console.log('it workkkks')
+    res.write('<h1>Wsh les locos !</h1>');
     res.sendStatus(200);
 });
 app.use('/users', userRoutes);
