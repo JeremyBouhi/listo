@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel . --ignore node_modules -d dist",
-    "start": "rm -rf dist && npm run build && nodemon dist/app.js"
+    "build": "babel . --ignore node_modules,dist -d dist",
+    "start": "npm run build && nodemon dist/app.js"
   },
   "author": "La Team de Ratpi",
   "license": "ISC",
