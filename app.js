@@ -32,6 +32,9 @@ var chatRoutes = require(path.join(__dirname, 'routes', 'chat'));
 
 // Routes : API RESTful
 // =============================================================================
+app.get('/', () => {
+    console.log('it workkkks')
+});
 app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);
 app.use('/chat', chatRoutes);
