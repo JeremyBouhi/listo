@@ -38,7 +38,7 @@ app.use('/trips', tripRoutes);
 
 // config files
 var db = require('./config/db');
-mongoose.connect(db.url);
+mongoose.connect(db.url,{ useNewUrlParser: true });
 
 // set our port
 var port = process.env.PORT || 8080; 
