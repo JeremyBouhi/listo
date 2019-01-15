@@ -2,10 +2,14 @@ var router = require('express').Router();
 
 // Controller
 import tripController from './../controllers/trip';
+import destinationController from './../controllers/destination';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
-//router.post('/:tripId/destination', tripController.destination);
+router.get('/:tripId', tripController.getTripInfo);
+
+router.post('/:tripId/addDestination', destinationController.addDestination);
+
 //router.post('/:tripId/dates', tripController.dates);
 //router.post('/:tripId/budget', tripController.budget);
 //router.post('/:tripId/todoList', tripController.list);

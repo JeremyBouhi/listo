@@ -20,7 +20,7 @@ var tripController = {
                 console.log("There is an error in adding trip in database");
                 res.sendStatus(500);
             }
-            else res.sendStatus(200);
+            // else res.sendStatus(200);
         })
 
     },
@@ -62,8 +62,19 @@ var tripController = {
             });
 
         })
+        
+    },
+    getTripInfo : function(req, res) {
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
 
+            res.status(200).send(trip);
+        })
     }
+
 
 };
 
