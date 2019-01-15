@@ -1,27 +1,58 @@
 import Trip from './../models/trip'
-
+import User from './../models/user'
 
 var tripController = {
 
     createTrip : function(req, res) {
-        //if(!req.session.user) {
-        //    console.log('You are not logged anymore')
-        //    return res.status(401).send();
-        //}
+        if(!req.session.user) {
+           console.log('You are not logged')
+           return res.status(401).send();
+        }
         console.log(req.body);
         var name = req.body.name;
+        var admin = req.session.user._id;
 
-        //req.session.user.trip =  name
         var trip = new Trip();
         trip.name = name;
+        trip.admin = admin;
+
+
+        req.session.user.trips.push(trip._id.toString());
 
         trip.save((err, result) => {
             if(err) {
                 console.log("There is an error in adding trip in database");
                 res.sendStatus(500);
             }
-            else res.sendStatus(200);
+            //else res.sendStatus(200);
         })
+
+        User.findOne({email: req.session.user.email, password: req.session.user.password}, function(err, user) {
+
+            if(err) {
+                console.log("error when using find one");
+                return res.status(500).send();
+            }
+
+            if(!user) {
+                console.log("User not found")
+                return res.status(404).send();
+            }
+
+            user.trips = req.session.user.trips;
+            console.log("Trips saved in database : ", user.trips);
+
+            user.save((err, result) => {
+                if(err) {
+                    console.log("There is an error in modifying user in database");
+                    res.sendStatus(500);
+                }
+                else res.sendStatus(200);
+            })
+        })
+
+
+
 
     },
 
@@ -50,7 +81,7 @@ var tripController = {
             console.log("New name : %s", newName);
             trip.name = newName;
             //req.session.user = user;
-            console.log('Name is changed ! it is now %s', trip.name);
+            console.log('Name is changed ! It is now %s', trip.name);
 
 
             trip.save(function (err, updatedTrip) {
