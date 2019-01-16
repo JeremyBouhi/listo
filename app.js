@@ -28,7 +28,6 @@ app.use(express.static(__dirname + '/public'));
 // Routes ===========================================
 var userRoutes = require(path.join(__dirname, 'routes', 'user'));
 var tripRoutes = require(path.join(__dirname, 'routes', 'trip'));
-var messageRoutes = require(path.join(__dirname, 'routes', 'message'));
 
 // Routes : API RESTful
 // =============================================================================
@@ -38,7 +37,6 @@ app.get('/', (req, res) => {
 });
 app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);
-app.use('/message', messageRoutes);
 
 
 
