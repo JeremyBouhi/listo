@@ -74,10 +74,7 @@ var userController = {
         })
   },
   getUserInfo: function(req,res){
-      console.log(req.session.user.email);
-        return res.status(200).send( req.session.user.email.toString());        
-            req.session.user=user;
-            console.log(req.session.user);     
+        return res.status(200).send(req.session.user);         
   }
 
 };
