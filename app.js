@@ -68,7 +68,6 @@ app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
 
-
 // set our port
 var port = process.env.PORT || 8080;
 

@@ -79,6 +79,11 @@ var userController = {
         })
   },
   getUserInfo: function(req,res){
+      if(!req.session.user){
+        console.log("Problem when accessing information of user");
+        return res.status(401).send();
+      }
+      else
         return res.status(200).send(req.session.user);         
   }
 
