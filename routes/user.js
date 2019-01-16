@@ -3,7 +3,12 @@ var router = require('express').Router();
 // Controller
 import userController from './../controllers/user';
 
-router.get('/login', userController.login);
+router.post('/login', userController.login);
+router.put('/editUser', userController.editUser);
+<<<<<<< Updated upstream
+router.get('/getUserInfo', userController.getUserInfo);
+=======
+>>>>>>> Stashed changes
 router.post('/register', userController.register);
 
 
