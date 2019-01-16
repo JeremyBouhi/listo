@@ -7,7 +7,8 @@ var destinationController = {
         console.log(req.body);
         var name = req.body.destination_name;
 
-        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+        Trip.findOne({_id : req.params.tripId
+            }).then((trip) => {
             if(err) {
                 console.log(err);
                 return res.status(500).send();
@@ -19,6 +20,7 @@ var destinationController = {
             }
         
         trip.destination.destination_name = name;
+        trip.destination.votes_number = 1;
 
         trip.save((err, result) => {
             if(err) {
@@ -27,7 +29,8 @@ var destinationController = {
             }
             else res.status(200).send();
         });
-    })
+
+        }).catch((err) => res.status(500).send(err))
 }
 
 
