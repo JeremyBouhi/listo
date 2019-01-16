@@ -1,8 +1,8 @@
-// var router = require('express').Router();
+var router = require('express').Router();
 
-// // Controller
-// import overviewController from '../controllers/overview';
+// Controller
+import overviewController from '../controllers/overview';
 
-// router.get('/:userId', overviewController.getAllTrips);
+router.get('/:userId', overviewController.getAllTrips);
 
-// module.exports = router;
+module.exports = router;

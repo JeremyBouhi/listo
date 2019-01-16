@@ -31,10 +31,10 @@ app.use(session({
 }));
 
 // Routes ===========================================
-var userRoutes = require(path.join(__dirname, 'routes', 'user'));
-var tripRoutes = require(path.join(__dirname, 'routes', 'trip'));
-var messageRoutes = require(path.join(__dirname, 'routes', 'message'));
-var overviewRoutes = require(path.join(__dirname, 'routes', 'overview'));
+var userRoutes      = require(path.join(__dirname, 'routes', 'user'));
+var tripRoutes      = require(path.join(__dirname, 'routes', 'trip'));
+var messageRoutes   = require(path.join(__dirname, 'routes', 'message'));
+var overviewRoutes  = require(path.join(__dirname, 'routes', 'overview'));
 
 // Routes : API RESTful
 // =============================================================================
@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);
 app.use('/message', messageRoutes);
-// app.use('/overview', overviewRoutes);
+app.use('/overview', overviewRoutes);
 
 
 
