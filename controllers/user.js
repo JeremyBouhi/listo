@@ -35,11 +35,11 @@ var userController = {
       user.save((err, result) => {
           if(err) {
               console.log("There is an error in adding user in database");
-              res.sendStatus(500);
+              res.status(500).send();
           }
           else {
               console.log("User added to database");
-              res.sendStatus(200);
+              res.status(200).send();
           }
 
       })
