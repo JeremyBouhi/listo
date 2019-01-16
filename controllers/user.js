@@ -41,15 +41,9 @@ var userController = {
       })
   },
   editUser: function(req,res){
-<<<<<<< Updated upstream
 
     console.log(req.body);
 
-=======
-
-    console.log(req.body);
-
->>>>>>> Stashed changes
         User.findOne({email : req.session.user.email}, function(err, user) {
             if(err) {
                 console.log(err);
@@ -74,7 +68,6 @@ var userController = {
                 }
                 else res.sendStatus(200);
             });
-<<<<<<< Updated upstream
             req.session.user=user;//mis à jour de la session
             console.log(req.session.user);
 
@@ -83,12 +76,8 @@ var userController = {
   getUserInfo: function(req,res){
       console.log(req.session.user.email);
         return res.status(200).send( req.session.user.email.toString());        
-=======
             req.session.user=user;
-            console.log(req.session.user);
-
-        })
->>>>>>> Stashed changes
+            console.log(req.session.user);     
   }
 
 };
