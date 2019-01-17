@@ -4,10 +4,10 @@ import User from './../models/user'
 var tripController = {
 
     createTrip : function(req, res) {
-        if(!req.session.user) {
-           console.log('You are not logged')
-           return res.status(401).send();
-        }
+        // if(!req.session.user) {
+        //    console.log('You are not logged')
+        //    return res.status(401).send();
+        // }
         console.log(req.body);
         var name = req.body.name;
         var admin = req.session.user._id;
