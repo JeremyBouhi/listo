@@ -22,6 +22,10 @@ var messageController = {
             }
             else res.sendStatus(200);
         }) 
+    },
+
+    retrieveChat : function(req, res) {
+    
     }
 
 };
