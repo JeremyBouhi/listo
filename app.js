@@ -43,15 +43,17 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(cors());
 
+app.set('trust proxy', 1)
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     maxAge: 1000 * 60 * 60 * 24,
-    // cookie: {
-    //     secure: false,
-    //     httpOnly: false
-    //     },
+    proxy: true,
+    cookie: {
+        secure: false
+        },
     store: store
 }));
 
