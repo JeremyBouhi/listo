@@ -3,10 +3,26 @@ var express        = require('express');
 var path           = require('path');
 var app            = express();
 var session        = require('express-session');
+var MongoDBStore   = require('connect-mongodb-session')(session);
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
 var env            = require('dotenv').config()
+
+// config files
+var db = require('./config/db');
+mongoose.connect(db.url,{ useNewUrlParser: true });
+
+var store = new MongoDBStore({
+    uri: db.url,
+    collection: 'mySessions'
+});
+
+// Catch errors
+store.on('error', function(error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
@@ -31,7 +47,8 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24,
     cookie: {
         secure: true
-        }
+        },
+    store: store
 }));
 
 // Routes ===========================================
@@ -51,11 +68,6 @@ app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
 
-
-
-// config files
-var db = require('./config/db');
-mongoose.connect(db.url,{ useNewUrlParser: true });
 
 // set our port
 var port = process.env.PORT || 8080;

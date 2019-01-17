@@ -160,7 +160,7 @@ var tripController = {
                     return res.status(500).send();
                 }
                 console.log("Trip is deleted");
-                return res.status(200).status();
+                return res.status(200).send();
             })
 
         })
