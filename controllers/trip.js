@@ -57,13 +57,12 @@ var tripController = {
     },
 
     editTrip : function(req, res) {
-        //if(!req.session.user) {
-        //    console.log('You are not logged anymore')
-        //    return res.status(401).send();
-        //}
+        if(!req.session.user) {
+           console.log('You are not logged')
+           return res.status(401).send();
+        }
 
         var newName = req.body.name;
-        //var oldName = req.params.tripId;
 
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
@@ -87,14 +86,88 @@ var tripController = {
             trip.save(function (err, updatedTrip) {
                 if(err) {
                     console.log("There is an error in modifying trip in database");
-                    res.sendStatus(500);
+                    res.status(500).send();
                 }
-                else res.sendStatus(200);
+                else res.status(200).send();
             });
 
         })
-        
+
     },
+
+
+    deleteTrip : function(req, res) {
+
+        if(!req.session.user) {
+           console.log('You are not logged')
+           return res.status(401).send();
+        }
+
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!trip) {
+                console.log("Trip not found...")
+                return res.status(404).send();
+            }
+
+            console.log("Trip %s found", trip.name);
+
+            User.findOne({email: req.session.user.email, password: req.session.user.password}, function(err, user) {
+
+                if(err) {
+                    console.log("Error when using find one");
+                    return res.status(500).send();
+                }
+
+                if(!user) {
+                    console.log("User not found")
+                    return res.status(404).send();
+                }
+
+
+                var index = user.trips.indexOf(trip._id.toString());
+
+                if (index > -1) {
+                    user.trips.splice(index, 1);
+                    req.session.user = user;
+
+                    user.save((err, result) => {
+                        if(err) {
+                            console.log("There is an error in modifying user in database");
+                            res.status(500).send();
+                        }
+                        else {
+                            console.log("User %s modified successfully", user.username);
+                            res.status(200).send();
+                        }
+                    })
+                }
+
+
+
+            })
+
+            Trip.deleteOne({_id : req.params.tripId}, function(err) {
+                if(err) {
+                    console.log(err);
+                    return res.status(500).send();
+                }
+                console.log("Trip is deleted");
+                return res.status(200).status();
+            })
+
+        })
+
+    },
+
+
+
+
     getTripInfo : function(req, res) {
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {

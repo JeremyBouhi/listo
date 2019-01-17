@@ -6,6 +6,7 @@ import destinationController from './../controllers/destination';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
+router.put('/:tripId/deleteTrip', tripController.deleteTrip);
 router.get('/:tripId', tripController.getTripInfo);
 
 router.post('/:tripId/addDestination', destinationController.addDestination);
