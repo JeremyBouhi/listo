@@ -44,13 +44,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(cors());
 
 app.use(session({
-    secret:process.env.SESSION_SECRET,
-    resave:false,
-    saveUninitialized:false,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
     maxAge: 1000 * 60 * 60 * 24,
-    cookie: {
-        secure: true
-        },
+    // cookie: {
+    //     secure: false,
+    //     httpOnly: false
+    //     },
     store: store
 }));
 
