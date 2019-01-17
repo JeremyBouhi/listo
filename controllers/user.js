@@ -17,6 +17,7 @@ var userController = {
             }
             console.log('Welcome back on Listo %s el loco', user.username);
             req.session.user = user;
+            req.session.save()
             console.log('req.session.user: ', req.session.user);
             return res.status(200).send();
         })
