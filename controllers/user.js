@@ -46,7 +46,7 @@ var userController = {
   },
   editUser: function(req,res){
 
-    console.log(req.body);
+        console.log(req.body);
 
         User.findOne({email : req.session.user.email}, function(err, user) {
             if(err) {
@@ -59,26 +59,35 @@ var userController = {
                 return res.status(404).send();
             }
 
-            
+
             user.username = req.body.username;
             user.email = req.body.email;
             user.password =req.body.password;
-            
+
+            req.session.user=user;//mis à jour de la session
+            console.log(req.session.user);
 
             user.save(function (err, updatedUser) {
                 if(err) {
                     console.log("There is an error in modifying user in database");
-                    res.sendStatus(500);
+                    res.status(500).send();
                 }
-                else res.sendStatus(200);
+                else res.status(200).send();
             });
-            req.session.user=user;//mis à jour de la session
-            console.log(req.session.user);
+
 
         })
   },
   getUserInfo: function(req,res){
-        return res.status(200).send(req.session.user);         
+        return res.status(200).send(req.session.user);
+  },
+
+  logOut: function(req, res) {
+
+      req.session.destroy();
+      console.log("Session destroyed, you are not logged");
+      return res.status(200).send()
+
   }
 
 };

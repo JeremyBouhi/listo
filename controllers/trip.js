@@ -9,7 +9,7 @@ var tripController = {
            return res.status(401).send();
         }
         console.log(req.body);
-        var name = req.body.name;
+        var name = req.body.  name;
         var admin = req.session.user._id;
 
         var trip = new Trip();
@@ -22,7 +22,7 @@ var tripController = {
         trip.save((err, result) => {
             if(err) {
                 console.log("There is an error in adding trip in database");
-                res.sendStatus(500);
+                res.status(500).send();
             }
             // else res.sendStatus(200);
         })
@@ -158,7 +158,7 @@ var tripController = {
                     return res.status(500).send();
                 }
                 console.log("Trip is deleted");
-                return res.status(200).status();
+                return res.status(200).send();
             })
 
         })

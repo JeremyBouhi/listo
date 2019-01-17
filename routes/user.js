@@ -7,6 +7,7 @@ router.post('/login', userController.login);
 router.put('/editUser', userController.editUser);
 router.get('/getUserInfo', userController.getUserInfo);
 router.post('/register', userController.register);
+router.post('/logOut', userController.logOut); 
 
 
 
