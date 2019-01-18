@@ -13,7 +13,8 @@ var tripSchema = mongoose.Schema({
         }]
     },
     admin : {type : String, default: ''},
-    toDoList:{type: mongoose.Schema.Types.ObjectId, ref: 'List'}
+    toDoList:{type: mongoose.Schema.Types.ObjectId, ref: 'List'},
+    users: []
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);

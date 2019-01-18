@@ -18,15 +18,6 @@ var userController = {
             }
             console.log('Welcome back on Listo %s el loco', user.username);
             req.session.user = user;
-            
-            // req.session.user.save((err) => {
-            //     if (!err) {
-            //         console.log(req.session);
-            //         // res.redirect("/");
-            //     }
-            // });
-
-            console.log('req.session.user: ', req.session.user);
             return res.status(200).send();
         })
     },
@@ -55,7 +46,7 @@ var userController = {
       })
   },
   editUser: function(req,res){
-    
+
 
     User.findOne({email : req.session.user.email}, function(err, user) {
             if(err) {
@@ -85,7 +76,7 @@ var userController = {
             });
 
 
-        }) 
+        })
   },
   getUserInfo: function(req,res){
       if(!req.session.user){
@@ -93,7 +84,7 @@ var userController = {
         return res.status(401).send();
       }
       else
-        return res.status(200).send(req.session.user);         
+        return res.status(200).send(req.session.user);
   },
 
   logOut: function(req, res) {
