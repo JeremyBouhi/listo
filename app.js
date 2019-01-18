@@ -45,11 +45,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24,
     // proxy: true,
     cookie: {
-<<<<<<< HEAD
         expires: 600000
-=======
-        secure: false
->>>>>>> 0f31b9571baa22f81b891936a426cfc3d8655f35
         },
     store: store
 }));
@@ -78,6 +74,7 @@ var userRoutes      = require(path.join(__dirname, 'routes', 'user'));
 var tripRoutes      = require(path.join(__dirname, 'routes', 'trip'));
 // var messageRoutes   = require(path.join(__dirname, 'routes', 'message'));
 var overviewRoutes  = require(path.join(__dirname, 'routes', 'overview'));
+
 // Routes : API RESTful
 // =============================================================================
 app.get('/', (req, res) => {
