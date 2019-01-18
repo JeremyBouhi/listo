@@ -68,11 +68,13 @@ var userController = {
                 return res.status(404).send();
             }
 
-            
+
             user.username = req.body.username;
             user.email = req.body.email;
             user.password =req.body.password;
-            
+
+            req.session.user=user;//mis à jour de la session
+            console.log(req.session.user);
 
             user.save(function (err, updatedUser) {
                 if(err) {
@@ -81,8 +83,7 @@ var userController = {
                 }
                 else res.status(200).send();
             });
-            req.session.user=user;//mis à jour de la session
-            console.log(req.session.user);
+
 
         }) 
   },
@@ -93,6 +94,17 @@ var userController = {
       }
       else
         return res.status(200).send(req.session.user);         
+  },
+
+  logOut: function(req, res) {
+    if(!req.session.user){
+        console.log("You're not logged");
+        return res.status(401).send();
+      }
+      req.session.destroy();
+      console.log("Session destroyed, you are now not logged");
+      return res.status(200).send()
+
   }
 
 };

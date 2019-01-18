@@ -1,5 +1,6 @@
 import Trip from './../models/trip'
 import User from './../models/user'
+import Waiting from './../models/waiting'
 
 var tripController = {
 
@@ -145,8 +146,6 @@ var tripController = {
                     })
                 }
 
-
-
             })
 
             Trip.deleteOne({_id : req.params.tripId}, function(err) {
@@ -162,6 +161,83 @@ var tripController = {
 
     },
 
+
+    addUser : function(req, res) {
+
+        console.log(req.body);
+
+        var email = req.body.email;
+        var user_id;
+        var trip_id = req.params.tripId;
+        var isInDatabase = false;
+
+
+        // Check if the user we want to add in the trip is in the database
+        User.findOne({email : email}, function(err, user){
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!user) {
+                console.log("User not found...")
+            }
+
+            else {
+            console.log("User found %s with id %s ",user.username,user._id);
+            id = user._id;
+            isInDatabase = true;
+            //res.status(200).send();
+            }
+        });
+
+
+        if (isInDatabase == false){
+
+
+            waiting = new Waiting();
+            waiting.email = email;
+            waiting.trip = trip_id;
+
+
+        }
+
+
+
+
+
+        Trip.findOne({_id : trip_id}, function(err, trip) {
+
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!trip) {
+                console.log("Trip not found...")
+                return res.status(404).send();
+            }
+
+            console.log("Trip %s found", trip.name);
+            console.log("User id : ",id);
+            trip.users.push(id.toString());
+
+            console.log("User %s added to trip %s ", id, trip.name);
+
+            trip.save(function (err, updatedTrip) {
+                if(err) {
+                    console.log("There is an error in modifying trip in database");
+                    res.status(500).send();
+                }
+                else {
+                    console.log("Trip saved to database");
+                    res.status(200).send();
+                }
+            });
+
+        })
+
+    },
 
 
 
