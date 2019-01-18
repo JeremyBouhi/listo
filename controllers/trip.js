@@ -23,9 +23,9 @@ var tripController = {
         trip.save((err, result) => {
             if(err) {
                 console.log("There is an error in adding trip in database");
-                res.sendStatus(500);
+                res.status(500).send();
             }
-            else res.sendStatus(200);
+            else res.status(200).send();
         })
 
         User.findOne({email: req.session.user.email, password: req.session.user.password}, function(err, user) {
