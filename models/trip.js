@@ -1,28 +1,16 @@
 var mongoose = require('mongoose');
 
-// import dateSchema from './date';
+import dateSchema from './date';
 
 var tripSchema = mongoose.Schema({
     name : {type : String, default: ''},
     date : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
-        final_date: {
-            year: {type:Number},
-            month: {type:Number},
-            day: {type:Number}
-        },
+        final_date: [dateSchema],
         dates_survey: [{
-            start_date: {
-                year: {type:Number},
-                month: {type:Number},
-                day: {type:Number}
-            },
-            end_date: {
-                year: {type:Number},
-                month: {type:Number},
-                day: {type:Number}
-            },
+            start_date: [dateSchema],
+            end_date: [dateSchema],
             user_id: {type : String, default: ''}
         }]
     },
@@ -31,13 +19,21 @@ var tripSchema = mongoose.Schema({
         deadline: {type : Date},
         final_destination: {type : String, default: ''},
         destinations_survey: [{
-            city: {type : String, default: ''},
-            country: {type : String, default: ''},
+            destination_name: {type : String, default: ''},
             votes_number: {type : Number, default: 0}
         }]
     },
     admin : {type : String, default: ''},
-    toDoList:{type: mongoose.Schema.Types.ObjectId, ref: 'List'}
+    toDoList:[{
+        description: {type:String, required:true},
+        difficulte: {type:Number, required:true},
+        usersInvolved:[]
+    }],
+    bringList:[{
+        description: {type:String, required:true},
+        difficulte: {type:Number, required:true},
+        usersInvolved:[]
+    }]
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);

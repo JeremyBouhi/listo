@@ -5,7 +5,7 @@ import tripController from './../controllers/trip';
 import destinationController from './../controllers/destination';
 import datesController from './../controllers/dates';
 import messageController from '../controllers/message';
-import toDoListController from './../controllers/toDoList';
+import listController from './../controllers/list';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
@@ -17,8 +17,7 @@ router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
 router.post('/:tripId/addDestination', destinationController.addDestination);
-router.put('/:tripId/add', toDoListController.add);
-
+router.put('/:tripId/:typelist/add', listController.add);
 router.post('/:tripId/addDates', datesController.addDates);
 
 //router.post('/:tripId/budget', tripController.budget);

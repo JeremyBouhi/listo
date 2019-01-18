@@ -1,24 +1,18 @@
-import Trip from './../models/trip'
+import Trip from '../models/trip'
 
-var toDoListController = {
+var listController = {
     add: function (req, res) {
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
                 console.log(err);
                 return res.status(500).send();
             }
-            var typeList = req.params.typeList
-            trip[typeList].description
-
             if(!trip) {
                 console.log("Trip not found...")
                 return res.status(404).send();
             }
 
-            trip.toDoList.ListElement.desciption = "ramenener les chips";
-            //req.session.user = user;
-            console.log('description: ', trip.name);
-
+            trip[req.params.typelist].push(req.body);
 
             trip.save(function (err, updatedTrip) {
                 if(err) {
@@ -33,4 +27,4 @@ var toDoListController = {
 
 };
 
-module.exports = toDoListController;
+module.exports = listController;
