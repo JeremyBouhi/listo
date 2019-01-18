@@ -1,21 +1,29 @@
 var mongoose = require('mongoose');
 
+// import dateSchema from './date';
+
 var tripSchema = mongoose.Schema({
-    name : {type : String, default: '', require: true},
+    name : {type : String, default: ''},
     date : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
         final_date: {
-            year :{type : Number},
-            month :{type : Number},
-            day :{type : Number}
+            year: {type:Number, required:true},
+            month: {type:Number, required:true},
+            day: {type:Number, required:true}
         },
         dates_survey: [{
-            date: {
-                year :{type : Number},
-                month :{type : Number},
-                day :{type : Number}
-            }
+            start_date: {
+                year: {type:Number, required:true},
+                month: {type:Number, required:true},
+                day: {type:Number, required:true}
+            },
+            end_date: {
+                year: {type:Number, required:true},
+                month: {type:Number, required:true},
+                day: {type:Number, required:true}
+            },
+            user_id: {type : String, default: ''}
         }]
     },
     destination : {

@@ -12,7 +12,7 @@ var overviewController = {
         await User.findOne({_id : req.session.user._id
         }).then(async (user) => {
             
-            var promises =  user.trips.map( (tripId) => {
+            var promises =  user.trips.map((tripId) => {
                 return Trip.findOne({_id : tripId
                 }).then((trip)=>{
                     return trip;

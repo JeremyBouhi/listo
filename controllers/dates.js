@@ -5,26 +5,33 @@ var datesController = {
 
     addDates : function(req, res) {
 
-        year = req.params.year;
-        month = req.params.month;
-        day = req.params.day;
-
-        const newDates = {
-            year,
-            month,
-            day
+        if(!req.session.user) {
+            console.log('You are not logged')
+            return res.status(401).send();
         }
-        
-        console.log('newDates: ', newDates);
-        
+            
         Trip.findOne({_id : req.params.tripId
             }).then((trip) => {
 
-        trip.date.dates_survey.push(newDates)
+        trip.date.dates_survey.push({
+            start_date : {
+                year: req.body.start_year,
+                month: req.body.start_month,
+                day: req.body.start_day
+            },
+            end_date : {
+                year: req.body.end_year,
+                month: req.body.end_month,
+                day: req.body.end_day
+            },
+            user_id : req.session.user._id
+        })
+        console.log('trip: ', trip);
 
         trip.save((err, result) => {
             if(err) {
-                console.log("There is an error in adding new destination in database");
+                console.log('err: ', err);
+                console.log("There is an error in adding new date in database");
                 res.status(500).send();
             }
             else res.status(200).send();

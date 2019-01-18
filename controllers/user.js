@@ -90,7 +90,7 @@ var userController = {
       if(!req.session.user){
         console.log("Problem when accessing information of user");
         res.status(401).send();
-      }
+    }
       else
         res.status(200).send(req.session.user);         
   }
