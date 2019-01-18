@@ -1,8 +1,23 @@
 var mongoose = require('mongoose');
 
 var tripSchema = mongoose.Schema({
-    name : {type : String, default: ''},
-    dates : {type : String, default: ''},
+    name : {type : String, default: '', require: true},
+    date : {
+        validated : {type : Boolean, default: 0},
+        deadline: {type : Date},
+        final_date: {
+            year :{type : Number},
+            month :{type : Number},
+            day :{type : Number}
+        },
+        dates_survey: [{
+            date: {
+                year :{type : Number},
+                month :{type : Number},
+                day :{type : Number}
+            }
+        }]
+    },
     destination : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
