@@ -164,6 +164,12 @@ var tripController = {
 
     addUser : function(req, res) {
 
+
+        if(!req.session.user) {
+           console.log('You are not logged')
+           return res.status(401).send();
+        }
+
         console.log(req.body);
 
         var email = req.body.email;
@@ -180,7 +186,7 @@ var tripController = {
             }
 
             if(!user) {
-                console.log("User not found...")
+                console.log("User not registered yet")
             }
 
             else {
@@ -199,7 +205,13 @@ var tripController = {
             waiting.email = email;
             waiting.trip = trip_id;
 
-
+            waiting.save((err, result) => {
+                if(err) {
+                    console.log("There is an error in adding a waiting element in database");
+                    res.status(500).send();
+                }
+                else res.status(200).send();
+            })
         }
 
 
