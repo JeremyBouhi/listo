@@ -46,9 +46,9 @@ var tripController = {
             user.save((err, result) => {
                 if(err) {
                     console.log("There is an error in modifying user in database");
-                    res.sendStatus(500);
+                    res.status(500).send();
                 }
-                else res.sendStatus(200);
+                else res.status(200).send();
             })
         })
 

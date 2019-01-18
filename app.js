@@ -79,7 +79,7 @@ var overviewRoutes  = require(path.join(__dirname, 'routes', 'overview'));
 // =============================================================================
 app.get('/', (req, res) => {
     console.log('it workkkks')
-    res.sendStatus(200);
+    res.status(200).send();
 });
 app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);

@@ -77,9 +77,9 @@ var userController = {
             user.save(function (err, updatedUser) {
                 if(err) {
                     console.log("There is an error in modifying user in database");
-                    res.sendStatus(500);
+                    res.status(500).send();
                 }
-                else res.sendStatus(200);
+                else res.status(200).send();
             });
             req.session.user=user;//mis à jour de la session
             console.log(req.session.user);
