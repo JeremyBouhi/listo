@@ -4,25 +4,26 @@ import Trip from './../models/trip'
 var destinationController = {
 
     addDestination : function(req, res) {
-        console.log(req.body);
-        var name = req.body.destination_name;
 
+        console.log('req.body: ', req.body);
+
+        const destination_name = req.body.destination_name
+        const votes_number = 1;
+
+        const newDestination = {
+            destination_name,
+            votes_number
+        }
+
+        console.log('newDestination: ', newDestination);
+        
         Trip.findOne({_id : req.params.tripId
             }).then((trip) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).send();
-            }
 
-            if(!trip) {
-                console.log("Trip not found...")
-                return res.status(404).send();
-            }
-        
-        trip.destination.destination_name = name;
-        trip.destination.votes_number = 1;
+        trip.destination.destinations_survey.push(newDestination)
 
         trip.save((err, result) => {
+            console.log('trip dans save: ', trip);
             if(err) {
                 console.log("There is an error in adding new destination in database");
                 res.status(500).send();
@@ -31,9 +32,7 @@ var destinationController = {
         });
 
         }).catch((err) => res.status(500).send(err))
-}
-
-
+    }
 };
 
 module.exports = destinationController;
