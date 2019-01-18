@@ -45,7 +45,11 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24,
     // proxy: true,
     cookie: {
+<<<<<<< HEAD
         expires: 600000
+=======
+        secure: false
+>>>>>>> 0f31b9571baa22f81b891936a426cfc3d8655f35
         },
     store: store
 }));
@@ -85,7 +89,6 @@ app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
-
 
 // set our port
 var port = process.env.PORT || 8080;

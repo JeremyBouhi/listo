@@ -13,6 +13,7 @@ var userController = {
             }
 
             if(!user) {
+                console.log('User not found');
                 return res.status(404).send();
             }
             console.log('Welcome back on Listo %s el loco', user.username);
@@ -54,10 +55,9 @@ var userController = {
       })
   },
   editUser: function(req,res){
+    
 
-    console.log(req.body);
-
-        User.findOne({email : req.session.user.email}, function(err, user) {
+    User.findOne({email : req.session.user.email}, function(err, user) {
             if(err) {
                 console.log(err);
                 return res.status(500).send();
@@ -84,9 +84,14 @@ var userController = {
             req.session.user=user;//mis à jour de la session
             console.log(req.session.user);
 
-        })
+        }) 
   },
   getUserInfo: function(req,res){
+      if(!req.session.user){
+        console.log("Problem when accessing information of user");
+        return res.status(401).send();
+      }
+      else
         return res.status(200).send(req.session.user);         
   }
 
