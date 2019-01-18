@@ -8,6 +8,7 @@ import messageController from '../controllers/message';
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
 router.put('/:tripId/deleteTrip', tripController.deleteTrip);
+router.put('/:tripId/addUser', tripController.addUser);
 router.get('/:tripId', tripController.getTripInfo);
 
 router.post('/:tripId/chat/:topic', messageController.sendMessage);
