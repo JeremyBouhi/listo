@@ -5,11 +5,13 @@ var destinationController = {
 
     addDestination : function(req, res) {
 
-        const destination_name = req.body.destination_name
+        const city = req.body.city
+        const country = req.body.country
         const votes_number = 1;
 
         const newDestination = {
-            destination_name,
+            city,
+            country,
             votes_number
         }
 

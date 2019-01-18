@@ -8,20 +8,20 @@ var tripSchema = mongoose.Schema({
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
         final_date: {
-            year: {type:Number, required:true},
-            month: {type:Number, required:true},
-            day: {type:Number, required:true}
+            year: {type:Number},
+            month: {type:Number},
+            day: {type:Number}
         },
         dates_survey: [{
             start_date: {
-                year: {type:Number, required:true},
-                month: {type:Number, required:true},
-                day: {type:Number, required:true}
+                year: {type:Number},
+                month: {type:Number},
+                day: {type:Number}
             },
             end_date: {
-                year: {type:Number, required:true},
-                month: {type:Number, required:true},
-                day: {type:Number, required:true}
+                year: {type:Number},
+                month: {type:Number},
+                day: {type:Number}
             },
             user_id: {type : String, default: ''}
         }]
@@ -31,7 +31,8 @@ var tripSchema = mongoose.Schema({
         deadline: {type : Date},
         final_destination: {type : String, default: ''},
         destinations_survey: [{
-            destination_name: {type : String, default: ''},
+            city: {type : String, default: ''},
+            country: {type : String, default: ''},
             votes_number: {type : Number, default: 0}
         }]
     },

@@ -23,7 +23,7 @@ var tripController = {
         trip.save((err, result) => {
             if(err) {
                 console.log("There is an error in adding trip in database");
-                res.status(500).send();
+                res.status(500).send(err);
             }
             else res.status(200).send();
         })
@@ -45,8 +45,9 @@ var tripController = {
 
             user.save((err, result) => {
                 if(err) {
+                    console.log('err: ', err);
                     console.log("There is an error in modifying user in database");
-                    res.status(500).send(err);
+                    res.status(500).send();
                 }
                 else res.status(200).send();
             })
