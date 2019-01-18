@@ -4,7 +4,7 @@ var router = require('express').Router();
 import tripController from './../controllers/trip';
 import destinationController from './../controllers/destination';
 import messageController from '../controllers/message';
-import toDoListController from './../controllers/toDoList';
+import listController from './../controllers/list';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
@@ -16,7 +16,7 @@ router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
 router.post('/:tripId/addDestination', destinationController.addDestination);
-router.put('/:tripId/add', toDoListController.add);
+router.put('/:tripId/:typelist/add', listController.add);
 //router.post('/:tripId/dates', tripController.dates);
 //router.post('/:tripId/budget', tripController.budget);
 //router.post('/:tripId/todoList', tripController.list);

@@ -13,7 +13,16 @@ var tripSchema = mongoose.Schema({
         }]
     },
     admin : {type : String, default: ''},
-    toDoList:{type: mongoose.Schema.Types.ObjectId, ref: 'List'}
+    toDoList:[{
+        description: {type:String, required:true},
+        difficulte: {type:Number, required:true},
+        usersInvolved:[]
+    }],
+    bringList:[{
+        description: {type:String, required:true},
+        difficulte: {type:Number, required:true},
+        usersInvolved:[]
+    }]
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
