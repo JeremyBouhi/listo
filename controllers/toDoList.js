@@ -7,7 +7,7 @@ var toDoListController = {
                 console.log(err);
                 return res.status(500).send();
             }
-
+            console.log('description: ', req.params.tripId);
             if(!trip) {
                 console.log("Trip not found...")
                 return res.status(404).send();
