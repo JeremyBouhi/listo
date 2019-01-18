@@ -28,25 +28,46 @@ store.on('error', function(error) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-// app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin:['http://localhost:4200'],
+    credentials: true // enable set cookie
+}));
 
-app.set('trust proxy', 1)
+// app.set('trust proxy', 1)
 
 app.use(session({
+    key: 'user_sid',
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     maxAge: 1000 * 60 * 60 * 24,
-    proxy: true,
+    // proxy: true,
     cookie: {
-        secure: false
+        expires: 600000
         },
     store: store
 }));
+
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid');        
+    }
+    next();
+});
+
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    if ('OPTIONS' == req.method) {
+        res.send(200);
+     } else {
+        next();
+     }
+    });
 
 // Routes ===========================================
 var userRoutes      = require(path.join(__dirname, 'routes', 'user'));
