@@ -18,12 +18,12 @@ var userController = {
             console.log('Welcome back on Listo %s el loco', user.username);
             req.session.user = user;
             
-            req.session.user.save((err) => {
-                if (!err) {
-                    console.log(req.session);
-                    // res.redirect("/");
-                }
-            });
+            // req.session.user.save((err) => {
+            //     if (!err) {
+            //         console.log(req.session);
+            //         // res.redirect("/");
+            //     }
+            // });
 
             console.log('req.session.user: ', req.session.user);
             return res.status(200).send();

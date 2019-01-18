@@ -18,16 +18,15 @@ var tripController = {
         trip.name = name;
         trip.admin = admin;
 
-
         req.session.user.trips.push(trip._id.toString());
 
-        // trip.save((err, result) => {
-        //     if(err) {
-        //         console.log("There is an error in adding trip in database");
-        //         res.sendStatus(500);
-        //     }
-            // else res.sendStatus(200);
-        // })
+        trip.save((err, result) => {
+            if(err) {
+                console.log("There is an error in adding trip in database");
+                res.sendStatus(500);
+            }
+            else res.sendStatus(200);
+        })
 
         User.findOne({email: req.session.user.email, password: req.session.user.password}, function(err, user) {
 
