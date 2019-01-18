@@ -1,21 +1,29 @@
 var mongoose = require('mongoose');
 
+// import dateSchema from './date';
+
 var tripSchema = mongoose.Schema({
-    name : {type : String, default: '', require: true},
+    name : {type : String, default: ''},
     date : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
         final_date: {
-            year :{type : Number},
-            month :{type : Number},
-            day :{type : Number}
+            year: {type:Number},
+            month: {type:Number},
+            day: {type:Number}
         },
         dates_survey: [{
-            date: {
-                year :{type : Number},
-                month :{type : Number},
-                day :{type : Number}
-            }
+            start_date: {
+                year: {type:Number},
+                month: {type:Number},
+                day: {type:Number}
+            },
+            end_date: {
+                year: {type:Number},
+                month: {type:Number},
+                day: {type:Number}
+            },
+            user_id: {type : String, default: ''}
         }]
     },
     destination : {
@@ -23,7 +31,8 @@ var tripSchema = mongoose.Schema({
         deadline: {type : Date},
         final_destination: {type : String, default: ''},
         destinations_survey: [{
-            destination_name: {type : String, default: ''},
+            city: {type : String, default: ''},
+            country: {type : String, default: ''},
             votes_number: {type : Number, default: 0}
         }]
     },
