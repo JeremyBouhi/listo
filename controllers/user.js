@@ -90,20 +90,20 @@ var userController = {
   getUserInfo: function(req,res){
       if(!req.session.user){
         console.log("Problem when accessing information of user");
-        return res.status(401).send();
+        res.status(401).send();
       }
       else
-        return res.status(200).send(req.session.user);         
+        res.status(200).send(req.session.user);         
   },
 
   logOut: function(req, res) {
     if(!req.session.user){
         console.log("You're not logged");
-        return res.status(401).send();
+        res.status(401).send();
       }
       req.session.destroy();
       console.log("Session destroyed, you are now not logged");
-      return res.status(200).send()
+      res.status(200).send()
 
   }
 

@@ -1,24 +1,26 @@
 import Trip from './../models/trip'
 
 
-var destinationController = {
+var datesController = {
 
-    addDestination : function(req, res) {
+    addDates : function(req, res) {
 
-        const destination_name = req.body.destination_name
-        const votes_number = 1;
+        year = req.params.year;
+        month = req.params.month;
+        day = req.params.day;
 
-        const newDestination = {
-            destination_name,
-            votes_number
+        const newDates = {
+            year,
+            month,
+            day
         }
-
-        console.log('newDestination: ', newDestination);
+        
+        console.log('newDates: ', newDates);
         
         Trip.findOne({_id : req.params.tripId
             }).then((trip) => {
 
-        trip.destination.destinations_survey.push(newDestination)
+        trip.date.dates_survey.push(newDates)
 
         trip.save((err, result) => {
             if(err) {
@@ -32,4 +34,4 @@ var destinationController = {
     }
 };
 
-module.exports = destinationController;
+module.exports = datesController;
