@@ -15,7 +15,7 @@ router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
 router.post('/:tripId/addDestination', destinationController.addDestination);
-router.post('/:tripId/add', toDoListController.add);
+router.put('/:tripId/add', toDoListController.add);
 //router.post('/:tripId/dates', tripController.dates);
 //router.post('/:tripId/budget', tripController.budget);
 //router.post('/:tripId/todoList', tripController.list);

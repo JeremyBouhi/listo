@@ -18,7 +18,6 @@ var tripController = {
         trip.name = name;
         trip.admin = admin;
 
-
         req.session.user.trips.push(trip._id.toString());
 
         trip.save((err, result) => {
@@ -52,10 +51,6 @@ var tripController = {
                 else res.sendStatus(200);
             })
         })
-
-
-
-
     },
 
     editTrip : function(req, res) {
