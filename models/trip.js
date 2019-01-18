@@ -8,7 +8,8 @@ var tripSchema = mongoose.Schema({
         votes_number: {type : Number, default: 0},
         validated : {type : Boolean, default: 0}
     },
-    admin : {type : String, default: ''}
+    admin : {type : String, default: ''},
+    toDoList:{type: mongoose.Schema.Types.ObjectId, ref: 'List'}
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);

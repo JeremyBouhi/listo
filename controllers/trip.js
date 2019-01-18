@@ -51,10 +51,6 @@ var tripController = {
                 else res.status(200).send();
             })
         })
-
-
-
-
     },
 
     editTrip : function(req, res) {
