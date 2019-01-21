@@ -240,7 +240,7 @@ var tripController = {
                             console.log("%s already added to the %s trip",user.username,trip.name);
                         }
                     })
-                    //console.log("isInTrip = ",isInTrip);
+            
                     if(isInTrip == true){
                         return res.status(401).send();
                     }
@@ -264,45 +264,6 @@ var tripController = {
             })
         }
     },
-
-
-
-
-
-        // Trip.findOne({_id : trip_id}, function(err, trip) {
-        //
-        //     if(err) {
-        //         console.log(err);
-        //         return res.status(500).send();
-        //     }
-        //
-        //     if(!trip) {
-        //         console.log("Trip not found...")
-        //         return res.status(404).send();
-        //     }
-        //
-        //     console.log("Trip %s found", trip.name);
-        //     console.log("User id : ",id);
-        //     trip.users.push(id.toString());
-        //
-        //     console.log("User %s added to trip %s ", id, trip.name);
-        //
-        //     trip.save(function (err, updatedTrip) {
-        //         if(err) {
-        //             console.log("There is an error in modifying trip in database");
-        //             res.status(500).send();
-        //         }
-        //         else {
-        //             console.log("Trip saved to database");
-        //             res.status(200).send();
-        //         }
-        //     });
-        //
-        // })
-
-
-
-
 
     getTripInfo : function(req, res) {
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
