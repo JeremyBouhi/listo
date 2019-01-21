@@ -22,13 +22,13 @@ var destinationController = {
 
         trip.save((err, result) => {
             if(err) {
-                console.log("There is an error in adding new destination in database");
-                res.status(500).send();
+                console.log(err)
+                res.status(500).send("There is an error in adding new destination in database");
             }
             else res.status(200).send();
         });
 
-        }).catch((err) => res.status(500).send(err))
+        }).catch((err) => res.status(500).send('ça marche despi'))
     }
 };
 

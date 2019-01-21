@@ -1,16 +1,17 @@
 var mongoose = require('mongoose');
 
 import dateSchema from './date';
+import budgetSchema from './budget';
 
 var tripSchema = mongoose.Schema({
     name : {type : String, default: ''},
     date : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
-        final_date: [dateSchema],
+        final_date: dateSchema,
         dates_survey: [{
-            start_date: [dateSchema],
-            end_date: [dateSchema],
+            start_date: dateSchema,
+            end_date: dateSchema,
             user_id: {type : String, default: ''}
         }]
     },
@@ -34,7 +35,9 @@ var tripSchema = mongoose.Schema({
         difficulte: {type:Number, required:true},
         usersInvolved:[]
     }],
-    users: []
+    users: [{
+        budget: [budgetSchema]
+    }]
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
