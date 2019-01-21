@@ -6,12 +6,15 @@ import destinationController from './../controllers/destination';
 import datesController from './../controllers/dates';
 import messageController from '../controllers/message';
 import listController from './../controllers/list';
+import groupController from './../controllers/group';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
 router.put('/:tripId/deleteTrip', tripController.deleteTrip);
-router.put('/:tripId/addUser', tripController.addUser);
 router.get('/:tripId', tripController.getTripInfo);
+
+router.put('/:tripId/addUser', groupController.addUser);
+router.get('/:tripId/getGroup', groupController.getGroup);
 
 router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
