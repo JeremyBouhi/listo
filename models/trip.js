@@ -33,7 +33,8 @@ var tripSchema = mongoose.Schema({
         description: {type:String, required:true},
         difficulte: {type:Number, required:true},
         usersInvolved:[]
-    }]
+    }],
+    users: []
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
