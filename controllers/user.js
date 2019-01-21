@@ -1,7 +1,7 @@
 import User from './../models/user'
 import Trip from './../models/trip'
 import Waiting from './../models/waiting'
-
+var mongoose = require('mongoose');
 
 var userController = {
   login: async function (req, res) {
@@ -202,29 +202,32 @@ var userController = {
         return res.status(401).send();
       }
                 
-    await Trip.find({}).then(async (trips) => {      
-        var promises =  trips.map( (trip) => {
-            return User.findOne({_id : trip.admin
-            }).then((user)=>{
-                if(user.username==="pierrotdu78"){
-                    console.log(user.username + " ", user._id);
-
+     /*await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
+        var promises = trips.map((trip) => {
+            trip.users.remove(trip.admin);
+            trip.admin="";
+            trip.save(function (err, updatedTrip) {
+                if(err) {
+                console.log("There is an error in modifying trip in database");
+                res.status(500).send();
                 }
-                return user;
-            }).catch((err) => res.status(500).send(err))
-        })           
-        
-        Promise.all(promises).then(function(users) {
-            users.forEach(function(user){
-                /* if(user.username==="pierrotdu78"){
-                    console.log(user.username + " ", user._id);
-
-                } */
-                //console.log(user.username + " ", user._id);
-            })
-            res.status(200).send(users);
-        })
+            });
+        }) 
+              
+    }).catch((err) => res.status(500).send(err)) 
+        User.deleteOne( {_id:req.session.user._id},function(err){
+        if (err) {
+            console.log("There is an error in deleting user in database");
+            res.status(500).send();
+        }
+    });*/
+    await Trip.find({users:req.session.user._id}).then(async (trips) => { 
+        var promises = trips.map((trip) => {
+            console.log(trip._id);
+        }) 
+              
     }).catch((err) => res.status(500).send(err))
+    res.status(200).send();
     }
 };
 
