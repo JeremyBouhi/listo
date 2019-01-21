@@ -194,8 +194,38 @@ var userController = {
       console.log("Session destroyed, you are now not logged");
       res.status(200).send()
 
-  }
+    },
 
+  deleteUser: async function(req, res) {
+    if(!req.session.user){
+        console.log("You're not logged");
+        return res.status(401).send();
+      }
+                
+    await Trip.find({}).then(async (trips) => {      
+        var promises =  trips.map( (trip) => {
+            return User.findOne({_id : trip.admin
+            }).then((user)=>{
+                if(user.username==="pierrotdu78"){
+                    console.log(user.username + " ", user._id);
+
+                }
+                return user;
+            }).catch((err) => res.status(500).send(err))
+        })           
+        
+        Promise.all(promises).then(function(users) {
+            users.forEach(function(user){
+                /* if(user.username==="pierrotdu78"){
+                    console.log(user.username + " ", user._id);
+
+                } */
+                //console.log(user.username + " ", user._id);
+            })
+            res.status(200).send(users);
+        })
+    }).catch((err) => res.status(500).send(err))
+    }
 };
 
 module.exports = userController;
