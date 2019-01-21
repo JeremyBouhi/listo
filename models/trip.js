@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-import dateSchema from './date';
+// import dateSchema from './date';
 import budgetSchema from './budget';
 
 var tripSchema = mongoose.Schema({
@@ -8,10 +8,22 @@ var tripSchema = mongoose.Schema({
     date : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
-        final_date: dateSchema,
+        final_date: {
+            year: {type:Number, default: 0},
+            month: {type:Number, default: 0},
+            day: {type:Number, default: 0}
+        },
         dates_survey: [{
-            start_date: dateSchema,
-            end_date: dateSchema,
+            start_date: {
+                year: {type:Number, default: 0},
+                month: {type:Number, default: 0},
+                day: {type:Number, default: 0}
+            },
+            end_date: {
+                year: {type:Number, default: 0},
+                month: {type:Number, default: 0},
+                day: {type:Number, default: 0}
+            },
             user_id: {type : String, default: ''}
         }]
     },
