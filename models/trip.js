@@ -26,13 +26,13 @@ var tripSchema = mongoose.Schema({
     },
     admin : {type : String, default: ''},
     toDoList:[{
-        description: {type:String},
-        difficulte: {type:Number},
+        description: {type:String, default: ''},
+        difficulte: {type:Number, default: ''},
         usersInvolved:[]
     }],
     bringList:[{
-        description: {type:String},
-        difficulte: {type:Number},
+        description: {type:String, default: ''},
+        difficulte: {type:Number, default: 0},
         usersInvolved:[]
     }],
     users: [{

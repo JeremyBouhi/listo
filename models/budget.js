@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 
 var budgetSchema = mongoose.Schema({
-    transportation: Number,
-    accommodation: Number,
-    on_the_spot: Number,
-    total: Number
+    transportation: {type:Number, default: 0},
+    accommodation: {type:Number, default: 0},
+    on_the_spot: {type:Number, default: 0},
+    total: {type:Number, default: 0}
 })
 
 var Budget = mongoose.model('Budget', budgetSchema);
