@@ -11,6 +11,7 @@ var mongoose       = require('mongoose');
 var cors           = require('cors')
 var env            = require('dotenv').config()
 
+
 // config files
 var db = require('./config/db');
 mongoose.connect(db.url,{ useNewUrlParser: true });
@@ -19,6 +20,8 @@ var store = new MongoDBStore({
     uri: db.url,
     collection: 'mySessions'
 });
+
+
 
 // Catch errors
 store.on('error', function(error) {
@@ -52,7 +55,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
-        res.clearCookie('user_sid');        
+        res.clearCookie('user_sid');
     }
     next();
 });

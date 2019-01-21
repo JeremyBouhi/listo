@@ -2,6 +2,34 @@ import Trip from './../models/trip'
 import User from './../models/user'
 import Waiting from './../models/waiting'
 
+// Mail setup
+var nodemailer     = require('nodemailer');
+var handlebars     = require('handlebars');
+var fs             = require('fs');
+
+var transporter = nodemailer.createTransport({
+ service: 'gmail',
+ auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+    }
+});
+
+//const mailOptions = {};
+
+var readHTMLFile = function(path, callback) {
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+            throw err;
+            callback(err);
+        }
+        else {
+            callback(null, html);
+        }
+    });
+};
+
+
 var tripController = {
 
     createTrip : function(req, res) {
@@ -218,6 +246,29 @@ var tripController = {
                             res.status(200).send();
                         }
                     })
+
+                    readHTMLFile('./templates/emailNotInDb.html', function(err, html) {
+                        var template = handlebars.compile(html);
+                        var replacements = {
+                             username: req.session.user.username
+                        };
+                        var htmlToSend = template(replacements);
+                        var mailOptions = {
+                            from: 'noreply.listo@gmail.com',
+                            to : email,
+                            subject : 'Organise ton voyage avec '+ req.session.user.username +' sur Listo !',
+                            html : htmlToSend
+                         };
+
+                         transporter.sendMail(mailOptions, function (err, info) {
+                            if(err)
+                              console.log(err)
+                            else
+                              console.log('Message sent: ' + info.response);
+                         });
+                    });
+
+
                 }
 
                 else {
@@ -241,7 +292,7 @@ var tripController = {
                             console.log("%s already added to the %s trip",user.username,trip.name);
                         }
                     })
-            
+
                     if(isInTrip == true){
                         return res.status(401).send();
                     }
@@ -260,6 +311,28 @@ var tripController = {
                                 res.status(200).send();
                             }
                         })
+
+                        readHTMLFile('./templates/emailInDb.html', function(err, html) {
+                            var template = handlebars.compile(html);
+                            var replacements = {
+                                 username1: req.session.user.username,
+                                 username2: user.username
+                            };
+                            var htmlToSend = template(replacements);
+                            var mailOptions = {
+                                from: 'noreply.listo@gmail.com',
+                                to : email,
+                                subject : req.session.user.username +' invite le célèbre ' + user.username + ' pour la prochaine quête !',
+                                html : htmlToSend
+                             };
+
+                             transporter.sendMail(mailOptions, function (err, info) {
+                                if(err)
+                                  console.log(err)
+                                else
+                                  console.log('Message sent: ' + info.response);
+                             });
+                        });
                     }
                 }
             })
