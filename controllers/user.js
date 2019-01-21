@@ -28,95 +28,96 @@ var userController = {
         })
 
 
-        await Waiting.findOne({email: email}, function(err, waiting){
+        await Waiting.find({email: email}, function(err, waitings){
             if(err) {
                 console.log(err);
                 return res.status(500).send();
             }
 
-            if(!waiting) {
+            if(!waitings) {
                 console.log('User not found on waiting list');
                 //res.status(404).send();
             }
 
             else {
-                console.log('%s is on waiting list for trip id %s',waiting.email,waiting.trip);
-                waiting_id = waiting._id;
 
-                // For each element in waiting list found
+                waitings.forEach(function(waiting){
 
-                Trip.findOne({_id : waiting.trip}, function(err, trip){
+                    console.log('%s is on waiting list for trip id %s',waiting.email,waiting.trip);
+                    waiting_id = waiting._id;
+
+                    // For each element in waiting list found
+
+                    Trip.findOne({_id : waiting.trip}, function(err, trip){
+
+                            if(err) {
+                                console.log(err);
+                                return res.status(500).send();
+                            }
+
+                            if(!trip) {
+                                console.log("Trip not found...")
+                                return res.status(404).send();
+                            }
+
+
+                            trip.users.push(user_id);
+                            console.log("User added to trip %s ", trip.name);
+
+                            trip.save(function (err, updatedTrip) {
+                                if(err) {
+                                    console.log("There is an error in modifying trip in database");
+                                    res.status(500).send();
+                                }
+                                else {
+                                    console.log("Trip saved to database");
+                                    res.status(200).send();
+                                }
+                            });
+                    })
+
+                    User.findOne({_id : user_id}, function(err, user){
 
                         if(err) {
                             console.log(err);
                             return res.status(500).send();
                         }
 
-                        if(!trip) {
-                            console.log("Trip not found...")
+                        if(!user) {
+                            console.log('User not found');
                             return res.status(404).send();
                         }
 
-                        console.log("Trip %s found", trip.name);
-                        trip.users.push(user_id);
-                        console.log("User added to trip %s ", trip.name);
+                        console.log(waiting.trip);
+                        user.trips.push(waiting.trip);
+                        console.log("Trip added to %s",user.username);
 
-                        trip.save(function (err, updatedTrip) {
+                        user.save(function (err, result) {
                             if(err) {
-                                console.log("There is an error in modifying trip in database");
+                                console.log("There is an error in modifying user in database");
                                 res.status(500).send();
                             }
                             else {
-                                console.log("Trip saved to database");
+                                console.log("User successfully modified to database");
                                 res.status(200).send();
                             }
                         });
 
-                })
+                    })
 
-                User.findOne({_id : user_id}, function(err, user){
-
-                    if(err) {
-                        console.log(err);
-                        return res.status(500).send();
-                    }
-
-                    if(!user) {
-                        console.log('User not found');
-                        return res.status(404).send();
-                    }
-
-                    console.log(waiting.trip);
-                    user.trips.push(waiting.trip);
-                    console.log("Trip added to %s",user.username);
-
-                    user.save(function (err, result) {
+                    Waiting.deleteOne({_id : waiting.id}, function(err) {
                         if(err) {
-                            console.log("There is an error in modifying user in database");
-                            res.status(500).send();
+                            console.log(err);
+                            return res.status(500).send();
                         }
                         else {
-                            console.log("User successfully modified to database");
-                            res.status(200).send();
+                            console.log("User is deleted from waiting list");
                         }
-                    });
-
-                })
-
-                Waiting.deleteOne({_id : waiting.id}, function(err) {
-                    if(err) {
-                        console.log(err);
-                        return res.status(500).send();
-                    }
-                    else {
-                        console.log("User is deleted from waiting list");
-                    }
-                })
-
+                    })
+                });
             }
 
         })
-
 
     },
 
@@ -182,7 +183,7 @@ var userController = {
         res.status(401).send();
     }
       else
-        res.status(200).send(req.session.user);         
+        res.status(200).send(req.session.user);
   },
 
   logOut: function(req, res) {
