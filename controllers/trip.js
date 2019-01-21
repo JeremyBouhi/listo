@@ -252,6 +252,7 @@ var tripController = {
 
                         waiting.save((err, result) => {
                             if(err) {
+                                console.log('err: ', err);
                                 console.log("There is an error in adding a waiting element in database");
                                 res.status(500).send();
                             }

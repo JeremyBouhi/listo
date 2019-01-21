@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // import dateSchema from './date';
-import budgetSchema from './budget';
+// import budgetSchema from './budget';
 
 var tripSchema = mongoose.Schema({
     name : {type : String, default: ''},
@@ -48,8 +48,19 @@ var tripSchema = mongoose.Schema({
         usersInvolved:[]
     }],
     users: [{
-        budget: [budgetSchema]
-    }]
+        budget: {
+            transportation: {type:Number, default: 0},
+            accommodation: {type:Number, default: 0},
+            on_the_spot: {type:Number, default: 0},
+            total: {type:Number, default: 0}
+        }
+    }],
+    budget: {
+        transportation: {type:Number, default: 0},
+        accommodation: {type:Number, default: 0},
+        on_the_spot: {type:Number, default: 0},
+        total: {type:Number, default: 0}
+    }
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
