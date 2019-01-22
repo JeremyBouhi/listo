@@ -28,6 +28,7 @@ router.post('/:tripId/:typeSurvey/addData', surveyController.addData);
 router.get('/:tripId/:typeSurvey/getData', surveyController.getData);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
+router.get('/:tripId/getBudget', budgetController.getBudget);
 
 router.put('/:tripId/:typelist/add', listController.add);
 

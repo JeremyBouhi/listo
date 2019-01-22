@@ -10,16 +10,11 @@ var budgetController = {
             console.log("Problem when accessing information of user");
             res.status(401).send();
         }
-        console.log('req.body.transportation: ', req.body.transportation);
-
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
-            console.log('req.params.tripId: ', req.params.tripId);
-            console.log('req.session.user._id: ', req.session.user._id);
             trip.users.map((user) => {
-                console.log('user._id: ', user._id);
                 if(user._id == req.session.user._id.toString()){
-                    
+
                     user.budget.transportation = req.body.transportation
                     user.budget.accommodation = req.body.accommodation
                     user.budget.on_the_spot = req.body.on_the_spot
@@ -37,6 +32,30 @@ var budgetController = {
                 res.status(200).send();
             }
         })
+    })
+},
+
+    getBudget: function(req,res) {
+            
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401).send();
+        }
+        Trip.findOne({_id : req.params.tripId
+        }).then((trip) => {
+            var promise =  trip.users.map((user) => {
+                if(user._id == req.session.user._id.toString()){
+
+                    return user.budget
+                }
+            })          
+            
+            Promise.resolve(promise).then(function(budget) {
+                console.log('budget[0]: ', budget[0]);
+
+                // [0] because of CoreMongooseArray...
+                res.status(200).send(budget[0])
+            })
     })
 }
     
