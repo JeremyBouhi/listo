@@ -202,7 +202,7 @@ var userController = {
         return res.status(401).send();
       }
                 
-     /*await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
+     await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
         var promises = trips.map((trip) => {
             trip.users.remove(trip.admin);
             trip.admin="";
@@ -215,19 +215,26 @@ var userController = {
         }) 
               
     }).catch((err) => res.status(500).send(err)) 
-        User.deleteOne( {_id:req.session.user._id},function(err){
-        if (err) {
-            console.log("There is an error in deleting user in database");
-            res.status(500).send();
-        }
-    });*/
-    await Trip.find({users:req.session.user._id}).then(async (trips) => { 
+    User.deleteOne( {_id:req.session.user._id},function(err){
+    if (err) {
+        console.log("There is an error in deleting user in database");
+        res.status(500).send();
+    }
+    });
+    console.log("User deleted in database");
+    res.status(200).send();
+
+    //still need to implement if no user in users array of trip, delete trip
+
+    //still need to code the function to find if the user is not admin but only user and delete him from trip
+    /* await Trip.find({users:req.session.user._id}).then(async (trips) => { 
         var promises = trips.map((trip) => {
             console.log(trip._id);
         }) 
-              
-    }).catch((err) => res.status(500).send(err))
-    res.status(200).send();
+        res.status(200).send();
+    }).catch((err) => res.status(500).send(err));  */
+        
+    
     }
 };
 
