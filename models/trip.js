@@ -39,12 +39,12 @@ var tripSchema = mongoose.Schema({
     admin : {type : String, default: ''},
     toDoList:[{
         description: {type:String, default: ''},
-        difficulte: {type:Number, default: ''},
+        difficulty: {type:Number, default: ''},
         usersInvolved:[]
     }],
     bringList:[{
         description: {type:String, default: ''},
-        difficulte: {type:Number, default: 0},
+        difficulty: {type:Number, default: 0},
         usersInvolved:[]
     }],
     users: [{
