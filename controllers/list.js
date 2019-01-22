@@ -77,7 +77,6 @@ var listController = {
             });
         })
     }
-
 };
 
 module.exports = listController;
