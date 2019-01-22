@@ -11,7 +11,7 @@ var listController = {
                 console.log("Trip not found...")
                 return res.status(404).send();
             }
-
+            //insert in correct list the description and difficulty of element
             trip[req.params.typelist].push(req.body);
 
             trip.save(function (err, updatedTrip) {
