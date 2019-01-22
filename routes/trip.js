@@ -17,6 +17,7 @@ router.get('/:tripId', tripController.getTripInfo);
 
 router.put('/:tripId/addUser', groupController.addUser);
 router.get('/:tripId/getGroup', groupController.getGroup);
+router.put('/:tripId/removeUser', groupController.removeUser);
 
 router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
@@ -31,11 +32,5 @@ router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);
 
 router.put('/:tripId/:typelist/add', listController.add);
-
-//router.post('/:tripId/budget', tripController.budget);
-//router.post('/:tripId/todoList', tripController.list);
-//router.post('/:tripId/bringList', tripController.list);
-
-
 
 module.exports = router;
