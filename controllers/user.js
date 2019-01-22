@@ -223,19 +223,26 @@ var userController = {
     }
     });
     console.log("User deleted in database");
-    res.status(200).send();
 
     //still need to implement if no user in users array of trip, delete trip
-
-    //still need to code the function to find if the user is not admin but only user and delete him from trip
-    /* await Trip.find({users:req.session.user._id}).then(async (trips) => { 
+     await Trip.find({}).then(async (trips) => { 
         var promises = trips.map((trip) => {
-            console.log(trip._id);
+             trip.users.map((user)=>{
+                if(user._id==req.session.user._id.toString())
+                 {
+                    trip.users.remove(user._id);
+                    trip.save(function (err, updatedTrip) {
+                        if(err) {
+                        console.log("There is an error in modifying trip in database");
+                        res.status(500).send();
+                        }
+                    });
+                 }
+             });  
         }) 
         res.status(200).send();
-    }).catch((err) => res.status(500).send(err));  */
+    }).catch((err) => res.status(500).send(err));  
         
-    
     }
 };
 
