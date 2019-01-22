@@ -13,7 +13,7 @@ var tripSchema = mongoose.Schema({
             month: {type:Number, default: 0},
             day: {type:Number, default: 0}
         },
-        dates_survey: [{
+        survey: [{
             start_date: {
                 year: {type:Number, default: 0},
                 month: {type:Number, default: 0},
@@ -24,16 +24,16 @@ var tripSchema = mongoose.Schema({
                 month: {type:Number, default: 0},
                 day: {type:Number, default: 0}
             },
-            user_id: {type : String, default: ''}
+            users_id: []
         }]
     },
     destination : {
         validated : {type : Boolean, default: 0},
         deadline: {type : Date},
         final_destination: {type : String, default: ''},
-        destinations_survey: [{
+        survey: [{
             destination_name: {type : String, default: ''},
-            votes_number: {type : Number, default: 0}
+            users_id: []
         }]
     },
     admin : {type : String, default: ''},

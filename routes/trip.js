@@ -2,11 +2,12 @@ var router = require('express').Router();
 
 // Controller
 import tripController from './../controllers/trip';
-import destinationController from './../controllers/destination';
-import datesController from './../controllers/dates';
+// import destinationController from './../controllers/destination';
+// import datesController from './../controllers/dates';
 import messageController from '../controllers/message';
 import listController from './../controllers/list';
 import groupController from './../controllers/group';
+import surveyController from './../controllers/survey';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
@@ -19,9 +20,13 @@ router.get('/:tripId/getGroup', groupController.getGroup);
 router.post('/:tripId/chat/:topic', messageController.sendMessage);
 router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
-router.post('/:tripId/addDestination', destinationController.addDestination);
+// router.post('/:tripId/addDestination', destinationController.addDestination);
+// router.post('/:tripId/addDates', datesController.addDates);
+
+router.post('/:tripId/:typeSurvey/addData', surveyController.addData);
+router.get('/:tripId/:typeSurvey/getData', surveyController.getData);
+
 router.put('/:tripId/:typelist/add', listController.add);
-router.post('/:tripId/addDates', datesController.addDates);
 
 //router.post('/:tripId/budget', tripController.budget);
 //router.post('/:tripId/todoList', tripController.list);
