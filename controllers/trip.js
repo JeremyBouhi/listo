@@ -339,6 +339,103 @@ var tripController = {
         }
     },
 
+
+    removeUser : async function(req, res) {
+
+        if(!req.session.user) {
+           console.log('You are not logged')
+           return res.status(401).send();
+        }
+
+        var user_id;
+        var email = req.body.email;
+
+        // Get the id of the user we want to remove
+        await User.findOne({email : email}, function(err, user ) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+            if(!user) {
+                console.log("User %s not found...",email);
+                return res.status(404).send();
+            }
+            else {
+                console.log("User %s found",user.username);
+                user_id = user._id;
+            }
+        });
+
+        // Remove user from the trip
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+            if(!trip) {
+                console.log("Trip not found...");
+                return res.status(404).send();
+            }
+            // You have to be the admin of the trip in order to remove a user
+            if(trip.admin != req.session.user._id) {
+                console.log("You are not the admin of this trip");
+                return res.status(401).send();
+            }
+            else {
+                console.log("Trip %s found", trip.name);
+                var index_trip = trip.users.indexOf(user_id);
+
+                if (index_trip > -1) {
+                    trip.users.splice(index_trip, 1);
+                    trip.save((err, result) => {
+                        if(err) {
+                            console.log("There is an error in modifying trip in database");
+                            res.status(500).send();
+                        }
+                        else {
+                            console.log("Trip %s modified successfully", trip.name);
+                            res.status(200).send();
+                        }
+                    });
+
+                    // Removing trip from the user removed
+                    User.findOne({_id : user_id}, function(err, user ) {
+                        if(err) {
+                            console.log(err);
+                            return res.status(500).send();
+                        }
+                        if(!user) {
+                            console.log("User %s not found...",email);
+                            return res.status(404).send();
+                        }
+                        else {
+                            var index_user = user.trips.indexOf(trip._id);
+                            if (index_user > -1) {
+                                user.trips.splice(index_user, 1);
+                                user.save((err, result) => {
+                                    if(err) {
+                                        console.log("There is an error in modifying user in database");
+                                        res.status(500).send();
+                                    }
+                                    else {
+                                        console.log("User %s modified successfully", user.username);
+                                        res.status(200).send();
+                                    }
+                                });
+                            };
+                        }
+                    });
+                }
+                // The user that we want to remove is not in this trip
+                else {
+                    console.log("User not in trip");
+                    return res.status(404).send();
+                }
+            }
+        });
+    },
+
+
     getTripInfo : function(req, res) {
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
