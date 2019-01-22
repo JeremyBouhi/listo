@@ -8,6 +8,7 @@ import messageController from '../controllers/message';
 import listController from './../controllers/list';
 import groupController from './../controllers/group';
 import surveyController from './../controllers/survey';
+import budgetController from './../controllers/budget';
 
 router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
@@ -25,6 +26,8 @@ router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
 router.post('/:tripId/:typeSurvey/addData', surveyController.addData);
 router.get('/:tripId/:typeSurvey/getData', surveyController.getData);
+
+router.put('/:tripId/saveBudget', budgetController.saveBudget);
 
 router.put('/:tripId/:typelist/add', listController.add);
 

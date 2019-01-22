@@ -203,37 +203,52 @@ var userController = {
         return res.status(401).send();
       }
                 
-     await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
-        var promises = trips.map((trip) => {
-            trip.users.remove(trip.admin);
-            trip.admin="";
-            trip.save(function (err, updatedTrip) {
-                if(err) {
-                console.log("There is an error in modifying trip in database");
-                res.status(500).send();
-                }
-            });
-        }) 
+    //  await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
+    //     var promises = trips.map((trip) => {
+    //         trip.users.remove(trip.admin);
+    //         trip.admin="";
+    //         trip.save(function (err, updatedTrip) {
+    //             if(err) {
+    //             console.log("There is an error in modifying trip in database");
+    //             res.status(500).send();
+    //             }
+    //         });
+    //     }) 
               
-    }).catch((err) => res.status(500).send(err)) 
-    User.deleteOne( {_id:req.session.user._id},function(err){
-    if (err) {
-        console.log("There is an error in deleting user in database");
-        res.status(500).send();
-    }
-    });
-    console.log("User deleted in database");
-    res.status(200).send();
+    // }).catch((err) => res.status(500).send(err)) 
+    // User.deleteOne( {_id:req.session.user._id},function(err){
+    // if (err) {
+    //     console.log("There is an error in deleting user in database");
+    //     res.status(500).send();
+    // }
+    // });
+    // console.log("User deleted in database");
+    // res.status(200).send();
 
     //still need to implement if no user in users array of trip, delete trip
 
     //still need to code the function to find if the user is not admin but only user and delete him from trip
-    /* await Trip.find({users:req.session.user._id}).then(async (trips) => { 
-        var promises = trips.map((trip) => {
-            console.log(trip._id);
+    await Trip.find({ }).then(async (trips) => { 
+        trips.map((trip) => {
+            // console.log('trip.users: ', trip.users);
+            trip.users.map((user) => {
+                console.log('user._id: ', user._id);
+                if(user._id == req.session._id)
+                    trip.users.splice(user._id, 1);
+            })
+            trip.save(function (err, updatedTrip) {
+                if(err) {
+                console.log('err: ', err);
+                console.log("There is an error in modifying trip in database");
+                res.status(500).send();
+                }
+            })
         }) 
         res.status(200).send();
-    }).catch((err) => res.status(500).send(err));  */
+    }).catch((err) => {
+        console.log('err: ', err);
+        res.status(500).send(err)
+    }); 
         
     
     }

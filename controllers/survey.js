@@ -15,7 +15,12 @@ var surveyController = {
         })
     },
 
-    addData : function(req, res) {        
+    addData : function(req, res) { 
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401).send();
+        }
+        
         Trip.findOne({_id : req.params.tripId
             }).then((trip) => {
         
