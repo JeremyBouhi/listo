@@ -19,8 +19,8 @@ router.put('/:tripId/addUser', groupController.addUser);
 router.get('/:tripId/getGroup', groupController.getGroup);
 router.put('/:tripId/removeUser', groupController.removeUser);
 
-router.post('/:tripId/chat/:topic', messageController.sendMessage);
-router.post('/:tripId/chat/:topic', messageController.retrieveChat);
+router.post('/:tripId/:topic/sendMessage', messageController.sendMessage);
+router.get('/:tripId/:topic/getChat', messageController.getChat);
 
 // router.post('/:tripId/addDestination', destinationController.addDestination);
 // router.post('/:tripId/addDates', datesController.addDates);

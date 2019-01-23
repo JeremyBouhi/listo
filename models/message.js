@@ -8,6 +8,6 @@ var messageSchema = mongoose.Schema({
     date : {type : Date, required:true}
 });
 
-var Message =  mongoose.model('Chat', messageSchema);
+var Message =  mongoose.model('Message', messageSchema);
 
 module.exports = Message;

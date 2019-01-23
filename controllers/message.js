@@ -5,14 +5,14 @@ var messageController = {
 
     sendMessage : function(req, res) {
         
-        console.log("Working good");
-        
+        var datetime = new Date();//Retrieve time but with 1 hour less
+        datetime.setTime(datetime.getTime() - new Date().getTimezoneOffset()*60*1000);//Set the correct time
          var message=new Message({
-            trip_id : "123",
-            content : "RATPI Merci pour le point sur MPG",
-            sender : "PSG",
-            topic : "Destination",
-            date : new Date()
+            trip_id : req.params.tripId,
+            content : req.body.content,
+            sender : req.session.user._id,
+            topic : req.params.topic,
+            date : datetime
          });
         //insertMsgInDB(dbchat,"123","RATPI Merci pour le point sur MPG","PSG","Destination"); 
         message.save((err, result) => {
@@ -24,7 +24,7 @@ var messageController = {
         }) 
     },
 
-    retrieveChat : function(req, res) {
+    getChat : function(req, res) {
     
     }
 
