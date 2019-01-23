@@ -43,23 +43,16 @@ var budgetController = {
         }
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
-            var promise =  trip.users.map((user) => {
+            trip.users.map((user) => {
                 if(user._id == req.session.user._id.toString()){
 
-                    return user
+                    res.status(200).send(user.budget) 
                 }
-            })          
-            
-            Promise.resolve(promise).then(function(user) {
-                // console.log('budget[0]: ', budget[0]);
-
-                res.status(200).send(user)
             })
     }).catch((err) => {
         res.status(500).send(err)
     })
-}
-    
+} 
 };
 
 module.exports = budgetController;
