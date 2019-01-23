@@ -8,9 +8,27 @@ var bodyParser     = require('body-parser');
 var cookieParser   = require('cookie-parser');
 var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
-var cors           = require('cors')
-var env            = require('dotenv').config()
+var cors           = require('cors');
+var env            = require('dotenv').config();
+var server = require('http').createServer();
+var io = require('socket.io')({path: '/myapp/socket.io'});
 
+
+io.of("/myapp/socket.io").sockets.on('connection', function (socket, pseudo) {
+    // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
+    socket.on('nouveau_client', function(pseudo) {
+        pseudo = ent.encode(pseudo);
+        socket.pseudo = pseudo;
+        socket.broadcast.emit('nouveau_client', pseudo);
+        console.log("new client connected !");
+    });
+
+    // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
+    socket.on('message', function (message) {
+        message = ent.encode(message);
+        socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+    });
+});
 
 // config files
 var db = require('./config/db');
