@@ -46,16 +46,19 @@ var budgetController = {
             var promise =  trip.users.map((user) => {
                 if(user._id == req.session.user._id.toString()){
 
-                    return user.budget
+                    res.status(200).send(user.budget)
                 }
             })          
             
-            Promise.resolve(promise).then(function(budget) {
-                console.log('budget[0]: ', budget[0]);
+            // Promise.resolve(promise).then(function(budget) {
+                // console.log('budget[0]: ', budget[0]);
 
                 // [0] because of CoreMongooseArray...
-                res.status(200).send(budget[0])
-            })
+                // res.status(200).send(budget[0])
+            // })
+    }).catch((err) => {
+        console.log('err: ', err);
+        res.status(500).send()
     })
 }
     
