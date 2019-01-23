@@ -35,6 +35,7 @@ router.put('/:tripId/:typelist/add', listController.add);
 router.delete('/:tripId/:typelist/:idElement/delete', listController.delete);
 router.put('/:tripId/:typelist/:idElement/modify', listController.modify);
 
+
 //router.post('/:tripId/budget', tripController.budget);
 
 
