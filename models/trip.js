@@ -40,11 +40,13 @@ var tripSchema = mongoose.Schema({
     toDoList:[{
         description: {type:String, default: ''},
         difficulty: {type:Number, default: ''},
+        status:{type:Boolean,default:false},
         usersInvolved:[]
     }],
     bringList:[{
         description: {type:String, default: ''},
         difficulty: {type:Number, default: 0},
+        status:{type:Boolean,default:false},
         usersInvolved:[]
     }],
     users: [{
