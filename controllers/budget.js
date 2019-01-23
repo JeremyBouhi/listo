@@ -50,10 +50,11 @@ var budgetController = {
                 }
             })          
             
-            Promise.all(promise).then(function(budget) {
-                // console.log('budget[0]: ', budget[0]);
+            Promise.resolve(promise).then(function(budget) {
+                console.log('budget[0]: ', budget[0]);
 
-                res.status(200).send(budget)
+                // [0] because of CoreMongooseArray...
+                res.status(200).send(budget[0])
             })
     }).catch((err) => {
         res.status(500).send(err)
