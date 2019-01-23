@@ -46,7 +46,7 @@ var budgetController = {
             trip.users.map((user) => {
                 if(user._id == req.session.user._id.toString()){
 
-                    res.status(200).send(user.budget) 
+                    return res.status(200).send(user.budget) 
                 }
             })
     }).catch((err) => {
