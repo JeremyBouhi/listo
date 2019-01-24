@@ -83,7 +83,7 @@ var budgetController = {
                 }
             })         
             
-            Promise.resolve(promise).then(function(result) {
+            Promise.all(promise).then(function(result) {
                 // console.log('budget[0]: ', budget[0]);
                 // [0] because of CoreMongooseArray...
                 res.status(200).send(result[0])
