@@ -7,33 +7,27 @@ var tripSchema = mongoose.Schema({
     name : {type : String, default: ''},
     date : {
         validated : {type : Boolean, default: 0},
-        deadline: {type : Date},
-        final_date: {
-            year: {type:Number, default: 0},
-            month: {type:Number, default: 0},
-            day: {type:Number, default: 0}
-        },
+        deadline: Date,
+        final_date: Date,
         survey: [{
-            start_date: {
-                year: {type:Number, default: 0},
-                month: {type:Number, default: 0},
-                day: {type:Number, default: 0}
-            },
-            end_date: {
-                year: {type:Number, default: 0},
-                month: {type:Number, default: 0},
-                day: {type:Number, default: 0}
-            },
-            users_id: []
+            start_date: Date,
+            end_date: Date,
+            color: String,
+            users_id: String,
+            custom_id : String
+        },{
+            _id : false
         }]
     },
     destination : {
         validated : {type : Boolean, default: 0},
-        deadline: {type : Date},
+        deadline: Date,
         final_destination: {type : String, default: ''},
         survey: [{
             destination_name: {type : String, default: ''},
-            users_id: []
+            users_id: String
+        },{
+            _id : false
         }]
     },
     admin : {type : String, default: ''},
