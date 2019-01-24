@@ -51,14 +51,15 @@ var budgetController = {
             trip.budget.accommodation = meanBudgetAccommodation;
             trip.budget.on_the_spot = meanBudgetOnTheSpot;
             trip.budget.total = meanBudgetTotal;
-
+            
             trip.save((err, result) => {
-            if(err) {
-                console.log('err: ', err);
-                res.status(500).send();
-            }
-            else {
-                console.log("Budget saved");
+                if(err) {
+                    console.log('err: ', err);
+                    res.status(500).send();
+                }
+                else {
+                    console.log("Budget saved");
+                    console.log('New Mean Budget: ', trip.budget);
                 res.status(200).send();
             }
         })
@@ -84,6 +85,7 @@ var budgetController = {
             })         
             
             Promise.all(promise).then(function(result) {
+                console.log('result: ', result);
                 res.status(200).send(result[0])
             })
     }).catch((err) => {
