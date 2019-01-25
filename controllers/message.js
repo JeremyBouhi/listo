@@ -1,7 +1,6 @@
 import Message from '../models/message'
 import User from '../models/user'
 
-
 var messageController = {
 
     sendMessage : function(req, res) {
@@ -58,6 +57,7 @@ var messageController = {
             })
         })
     }
+
 };
 
 

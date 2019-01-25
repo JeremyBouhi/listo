@@ -10,25 +10,12 @@ var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
 var cors           = require('cors');
 var env            = require('dotenv').config();
-var server = require('http').createServer();
-var io = require('socket.io')({path: '/myapp/socket.io'});
+
+var ent = require('ent');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 
-io.of("/myapp/socket.io").sockets.on('connection', function (socket, pseudo) {
-    // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
-    socket.on('nouveau_client', function(pseudo) {
-        pseudo = ent.encode(pseudo);
-        socket.pseudo = pseudo;
-        socket.broadcast.emit('nouveau_client', pseudo);
-        console.log("new client connected !");
-    });
-
-    // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
-    socket.on('message', function (message) {
-        message = ent.encode(message);
-        socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
-    });
-});
 
 // config files
 var db = require('./config/db');
@@ -40,7 +27,30 @@ var store = new MongoDBStore({
 });
 
 
+app.get('/:tripId/:topic/chat', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+    var nsp = io.of(req.params.tripId+"/"+req.params.topic+"/chat");
+    nsp.on('connection', function(socket,pseudo){
+        console.log('someone connected');
+        socket.on('nouveau_client', function(pseudo) {
+            socket.pseudo = pseudo;
+            socket.broadcast.emit('nouveau_client', pseudo);
+            console.log("new client connected !");
+        });
+    
+        // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
+        socket.on('message', function (message) {
+            message = ent.encode(message);
+            socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+        });
+    });
+  });
+      
 
+  http.listen(3000, function(){
+    console.log('listening on *:3000');
+  });
+ 
 // Catch errors
 store.on('error', function(error) {
     assert.ifError(error);
@@ -122,3 +132,4 @@ console.log('RDV au port ' + port);
 
 // expose app
 exports = module.exports = app;
+module.exports.io = io;
