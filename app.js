@@ -11,12 +11,6 @@ var mongoose       = require('mongoose');
 var cors           = require('cors');
 var env            = require('dotenv').config();
 
-var ent = require('ent');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
-
-
 // config files
 var db = require('./config/db');
 mongoose.connect(db.url,{ useNewUrlParser: true });
@@ -26,31 +20,19 @@ var store = new MongoDBStore({
     collection: 'mySessions'
 });
 
+// set our port
+var port = process.env.PORT || 8080;
+// start app ===============================================
+// startup our app at http://localhost:8080
+var server = app.listen(port);
+
+var io = require('socket.io').listen(server);
 
 app.get('/:tripId/:topic/chat', function(req, res){
     res.sendFile(__dirname + '/index.html');
-    var nsp = io.of(req.params.tripId+"/"+req.params.topic+"/chat");
-    nsp.on('connection', function(socket,pseudo){
-        console.log('someone connected');
-        socket.on('nouveau_client', function(pseudo) {
-            socket.pseudo = pseudo;
-            socket.broadcast.emit('nouveau_client', pseudo);
-            console.log("new client connected !");
-        });
-    
-        // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
-        socket.on('message', function (message) {
-            message = ent.encode(message);
-            socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
-        });
-    });
   });
       
 
-  http.listen(3000, function(){
-    console.log('listening on *:3000');
-  });
- 
 // Catch errors
 store.on('error', function(error) {
     assert.ifError(error);
@@ -117,19 +99,15 @@ app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
 
-// set our port
-var port = process.env.PORT || 8080;
+
 
 // routes ==================================================
 // require('./back/routes')(app); // configure our routes
 
-// start app ===============================================
-// startup our app at http://localhost:8080
-app.listen(port);
+
 
 // shoutout to the user
 console.log('RDV au port ' + port);
 
 // expose app
-exports = module.exports = app;
-module.exports.io = io;
+exports = module.exports = {app : app, io:io};

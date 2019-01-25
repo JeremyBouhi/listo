@@ -13,9 +13,10 @@ var listController = {
             }
             //insert in correct list the description and difficulty of element
             trip[req.params.typelist].push(req.body);
-
+            
             trip.save(function (err, updatedTrip) {
                 if(err) {
+                    console.log(err);
                     console.log("There is an error in modifying trip in database");
                     res.status(500).send();
                 }
