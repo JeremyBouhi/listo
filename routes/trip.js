@@ -27,6 +27,8 @@ router.post('/:tripId/chat/:topic', messageController.retrieveChat);
 
 router.post('/:tripId/:typeSurvey/addData', surveyController.addData);
 router.get('/:tripId/:typeSurvey/getData', surveyController.getData);
+router.post('/:tripId/:typeSurvey/addVote', surveyController.addVote);
+router.post('/:tripId/:typeSurvey/deleteVote', surveyController.deleteVote);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);

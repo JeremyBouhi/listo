@@ -13,10 +13,10 @@ var tripSchema = mongoose.Schema({
             start_date: Date,
             end_date: Date,
             color: String,
-            users_id: String,
+            users_id: [],
             custom_id : String
         },{
-            _id : false
+            _id : false 
         }]
     },
     destination : {
@@ -25,7 +25,7 @@ var tripSchema = mongoose.Schema({
         final_destination: {type : String, default: ''},
         survey: [{
             destination_name: {type : String, default: ''},
-            users_id: String
+            users_id: []
         },{
             _id : false
         }]
