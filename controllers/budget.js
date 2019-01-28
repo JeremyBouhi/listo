@@ -1,6 +1,17 @@
 import Trip from './../models/trip'
 import User from './../models/user'
 
+var getIndex = function(arr, attr, value){
+    var i = arr.length;
+    var index = -1;
+    while(i--){
+       if( arr[i][attr] == value){
+           index = i;
+           break;
+       }
+    }
+    return index;
+}
 
 var budgetController = {
 
@@ -74,19 +85,23 @@ var budgetController = {
         }
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
-            var promise =  trip.users.map((user) => {
-                    if(user._id == req.session.user._id.toString()){
-                        return {
-                            meanBudget: trip.budget,
-                            myBudget: user.budget
-                        }
-                    }                    
-            })         
-            
-            Promise.all(promise).then(function(result) {
-                console.log('result: ', result);
-                res.status(200).send(result[0])
-            })
+                var index_user = getIndex(trip.users, '_id', req.session.user._id.toString());
+                console.log('index_user: ', index_user);
+
+                if (index_user > -1) {
+                    console.log('trip.budget: ', trip.budget);
+                    console.log('trip.users[index_user].budget: ', trip.users[index_user].budget);
+
+                    res.status(200).send({
+                        meanBudget: trip.budget,
+                        myBudget: trip.users[index_user].budget
+                    })
+                }
+                else {
+                    // res.status(404)
+                    console.log('User not found in this trip');
+                }      
+
     }).catch((err) => {
         res.status(500).send(err)
     })
