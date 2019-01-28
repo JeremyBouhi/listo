@@ -13,9 +13,10 @@ var listController = {
             }
             //insert in correct list the description and difficulty of element
             trip[req.params.typelist].push(req.body);
-
+            
             trip.save(function (err, updatedTrip) {
                 if(err) {
+                    console.log(err);
                     console.log("There is an error in modifying trip in database");
                     res.status(500).send();
                 }
@@ -76,8 +77,22 @@ var listController = {
                 }
             });
         })
-    }
+    },
+    get : function (req, res) {
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+            if(!trip) {
+                console.log("Trip not found...")
+                return res.status(404).send();
+            }
+            console.log("Sending list..")
+            res.status(200).send(trip[req.params.typelist]);
 
+        })
+    }
 };
 
 module.exports = listController;

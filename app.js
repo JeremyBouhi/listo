@@ -8,9 +8,8 @@ var bodyParser     = require('body-parser');
 var cookieParser   = require('cookie-parser');
 var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
-var cors           = require('cors')
-var env            = require('dotenv').config()
-
+var cors           = require('cors');
+var env            = require('dotenv').config();
 
 // config files
 var db = require('./config/db');
@@ -21,7 +20,18 @@ var store = new MongoDBStore({
     collection: 'mySessions'
 });
 
+// set our port
+var port = process.env.PORT || 8080;
+// start app ===============================================
+// startup our app at http://localhost:8080
+var server = app.listen(port);
 
+var io = require('socket.io').listen(server);
+
+app.get('/:tripId/:topic/chat', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+  });
+      
 
 // Catch errors
 store.on('error', function(error) {
@@ -89,18 +99,15 @@ app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
 
-// set our port
-var port = process.env.PORT || 8080;
+
 
 // routes ==================================================
 // require('./back/routes')(app); // configure our routes
 
-// start app ===============================================
-// startup our app at http://localhost:8080
-app.listen(port);
+
 
 // shoutout to the user
 console.log('RDV au port ' + port);
 
 // expose app
-exports = module.exports = app;
+exports = module.exports = {app : app, io:io};
