@@ -1,7 +1,7 @@
 import User from './../models/user'
 import Trip from './../models/trip'
 import Waiting from './../models/waiting'
-var mongoose = require('mongoose');
+
 
 var userController = {
   login: async function (req, res) {
@@ -28,7 +28,7 @@ var userController = {
         })
 
 
-        await Waiting.find({email: email}, function(err, waitings){
+         Waiting.find({email: email}, function(err, waitings){
             if(err) {
                 console.log(err);
                 return res.status(500).send();
@@ -36,17 +36,17 @@ var userController = {
 
             if(!waitings) {
                 console.log('User not found on waiting list');
-                //res.status(404).send();
             }
 
             else {
 
+                // For each element in waiting list found
                 waitings.forEach(function(waiting){
 
                     console.log('%s is on waiting list for trip id %s',waiting.email,waiting.trip);
                     waiting_id = waiting._id;
 
-                    // For each element in waiting list found
+
 
                     Trip.findOne({_id : waiting.trip}, function(err, trip){
 
@@ -88,7 +88,6 @@ var userController = {
                             return res.status(404).send();
                         }
 
-                        console.log(waiting.trip);
                         user.trips.push(waiting.trip);
                         console.log("Trip added to %s",user.username);
 
@@ -127,23 +126,43 @@ var userController = {
       var email = req.body.email;
       var password = req.body.password;
 
-      var user = new User();
-      user.username = username;
-      user.email = email;
-      user.password = password;
-
-      user.save((err, result) => {
+      // Check if the email is already in database
+      User.findOne({email : email}, async function(err, user){
           if(err) {
-              console.log("There is an error in adding user in database");
-              res.status(500).send();
+              console.log(err);
+              return res.status(500).send();
           }
+
+          if(!user) {
+              console.log("User not registered yet")
+              var user = new User();
+              user.username = username;
+              user.email = email;
+              user.password = password;
+
+              user.save((err, result) => {
+                  if(err) {
+                      console.log("There is an error in adding user in database");
+                      res.status(500).send();
+                  }
+                  else {
+                      console.log("User added to database");
+                      res.status(200).send();
+                  }
+              })
+
+          }
+
           else {
-              console.log("User added to database");
-              res.status(200).send();
+              console.log("Email already used");
+              res.status(401).send("Email already used");
           }
 
       })
+
   },
+
+
   editUser: function(req,res){
 
 
@@ -202,8 +221,8 @@ var userController = {
         console.log("You're not logged");
         return res.status(401).send();
       }
-                
-     await Trip.find({admin:req.session.user._id}).then(async (trips) => { 
+
+     await Trip.find({admin:req.session.user._id}).then(async (trips) => {
         var promises = trips.map((trip) => {
             trip.users.remove(trip.admin);
             trip.admin="";
@@ -213,9 +232,9 @@ var userController = {
                 res.status(500).send();
                 }
             });
-        }) 
-              
-    }).catch((err) => res.status(500).send(err)) 
+        })
+
+    }).catch((err) => res.status(500).send(err))
     User.deleteOne( {_id:req.session.user._id},function(err){
     if (err) {
         console.log("There is an error in deleting user in database");
@@ -225,7 +244,7 @@ var userController = {
     console.log("User deleted in database");
 
     //still need to implement if no user in users array of trip, delete trip
-     await Trip.find({}).then(async (trips) => { 
+     await Trip.find({}).then(async (trips) => {
         var promises = trips.map((trip) => {
              trip.users.map((user)=>{
                 if(user._id==req.session.user._id.toString())
@@ -238,11 +257,11 @@ var userController = {
                         }
                     });
                  }
-             });  
-        }) 
+             });
+        })
         res.status(200).send();
-    }).catch((err) => res.status(500).send(err));  
-        
+    }).catch((err) => res.status(500).send(err));
+
     }
 };
 
