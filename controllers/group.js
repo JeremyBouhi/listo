@@ -2,6 +2,51 @@ import Trip from './../models/trip'
 import User from './../models/user'
 import Waiting from './../models/waiting'
 
+
+// Mail setup
+var nodemailer     = require('nodemailer');
+var handlebars     = require('handlebars');
+var fs             = require('fs');
+
+var transporter = nodemailer.createTransport({
+ service: 'gmail',
+ auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+    }
+});
+
+//const mailOptions = {};
+
+var readHTMLFile = function(path, callback) {
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+            throw err;
+            callback(err);
+        }
+        else {
+            callback(null, html);
+        }
+    });
+};
+
+
+// Remove Object from array by attribut
+var getIndex = function(arr, attr, value){
+    var i = arr.length;
+    var index = -1;
+    while(i--){
+       if( arr[i][attr] == value){
+           index = i;
+           break;
+       }
+    }
+    return index;
+}
+
+
+
+
 var groupController = {
 
     getGroup: async function(req, res){
@@ -9,17 +54,17 @@ var groupController = {
             console.log('You are not logged')
             return res.status(401).send();
         }
-                
+
         await Trip.findOne({_id : req.params.tripId
         }).then(async (trip) => {
-            
+
             var promises =  trip.users.map((userId) => {
                 return User.findOne({_id : userId
                 }).then((user)=>{
                     return user;
                 }).catch((err) => res.status(500).send(err))
-            })           
-            
+            })
+
             Promise.all(promises).then(function(users) {
                 console.log(users)
                 res.status(200).send(users)
@@ -30,8 +75,8 @@ var groupController = {
     addUser : async function(req, res) {
 
         if(!req.session.user) {
-        console.log('You are not logged')
-        return res.status(401).send();
+           console.log('You are not logged')
+           return res.status(401).send();
         }
 
         var email = req.body.email;
@@ -73,7 +118,6 @@ var groupController = {
                     console.log("User not registered yet")
                     waiting.save((err, result) => {
                         if(err) {
-                            console.log('err: ', err);
                             console.log("There is an error in adding a waiting element in database");
                             return res.status(500).send();
                         }
@@ -82,6 +126,29 @@ var groupController = {
                             res.status(200).send();
                         }
                     })
+
+                    readHTMLFile('./templates/emailNotInDb.html', function(err, html) {
+                        var template = handlebars.compile(html);
+                        var replacements = {
+                             username: req.session.user.username
+                        };
+                        var htmlToSend = template(replacements);
+                        var mailOptions = {
+                            from: 'noreply.listo@gmail.com',
+                            to : email,
+                            subject : 'Organise ton voyage avec '+ req.session.user.username +' sur Listo !',
+                            html : htmlToSend
+                         };
+
+                         transporter.sendMail(mailOptions, function (err, info) {
+                            if(err)
+                              console.log(err)
+                            else
+                              console.log('Message sent: ' + info.response);
+                         });
+                    });
+
+
                 }
 
                 else {
@@ -105,7 +172,7 @@ var groupController = {
                             console.log("%s already added to the %s trip",user.username,trip.name);
                         }
                     })
-            
+
                     if(isInTrip == true){
                         return res.status(401).send();
                     }
@@ -116,7 +183,6 @@ var groupController = {
 
                         waiting.save((err, result) => {
                             if(err) {
-                                console.log('err: ', err);
                                 console.log("There is an error in adding a waiting element in database");
                                 res.status(500).send();
                             }
@@ -125,6 +191,28 @@ var groupController = {
                                 res.status(200).send();
                             }
                         })
+
+                        readHTMLFile('./templates/emailInDb.html', function(err, html) {
+                            var template = handlebars.compile(html);
+                            var replacements = {
+                                 username1: req.session.user.username,
+                                 username2: user.username
+                            };
+                            var htmlToSend = template(replacements);
+                            var mailOptions = {
+                                from: 'noreply.listo@gmail.com',
+                                to : email,
+                                subject : req.session.user.username +' invite le célèbre ' + user.username + ' pour la prochaine quête !',
+                                html : htmlToSend
+                             };
+
+                             transporter.sendMail(mailOptions, function (err, info) {
+                                if(err)
+                                  console.log(err)
+                                else
+                                  console.log('Message sent: ' + info.response);
+                             });
+                        });
                     }
                 }
             })
@@ -137,10 +225,10 @@ var groupController = {
                console.log('You are not logged')
                return res.status(401).send();
             }
-    
+
             var user_id;
             var email = req.body.email;
-    
+
             // Get the id of the user we want to remove
             await User.findOne({email : email}, function(err, user ) {
                 if(err) {
@@ -153,10 +241,10 @@ var groupController = {
                 }
                 else {
                     console.log("User %s found",user.username);
-                    user_id = user._id;
+                    user_id = user._id.toString();
                 }
             });
-    
+
             // Remove user from the trip
             Trip.findOne({_id : req.params.tripId}, function(err, trip) {
                 if(err) {
@@ -174,8 +262,8 @@ var groupController = {
                 }
                 else {
                     console.log("Trip %s found", trip.name);
-                    var index_trip = trip.users.indexOf(user_id);
-    
+                    var index_trip = getIndex(trip.users, '_id', user_id);
+
                     if (index_trip > -1) {
                         trip.users.splice(index_trip, 1);
                         trip.save((err, result) => {
@@ -188,7 +276,7 @@ var groupController = {
                                 res.status(200).send();
                             }
                         });
-    
+
                         // Removing trip from the user removed
                         User.findOne({_id : user_id}, function(err, user ) {
                             if(err) {
