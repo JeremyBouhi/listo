@@ -1,4 +1,5 @@
 import Trip from '../models/trip'
+import { callbackify } from 'util';
 
 var listController = {
     add: function (req, res) {
@@ -37,13 +38,14 @@ var listController = {
                 return res.status(404).send();
             }
             //delete element of list
-            trip[req.params.typelist].remove(req.params.idElement);
-            console.log("message deleted!")
+           trip[req.params.typelist].remove(req.params.idElement);
+            
+           console.log("message deleted!")
 
             trip.save(function (err, updatedTrip) {
                 if(err) {
                     console.log("There is an error in modifying trip in database");
-                    res.status(500).send();
+                    return res.status(500).send();
                 }
                 else res.status(200).send();
             });
@@ -66,6 +68,8 @@ var listController = {
                 if(element._id==req.params.idElement){
                     element.description=req.body.description;
                     element.difficulty=req.body.difficulty;
+                    element.status=req.body.status;
+                    element.usersInvolved=req.body.usersInvolved;
                     trip.save(function (err, updatedTrip) {
                         if(err) {
                             console.log("There is an error in modifying trip in database");
