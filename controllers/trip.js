@@ -2,33 +2,6 @@ import Trip from './../models/trip'
 import User from './../models/user'
 import Waiting from './../models/waiting'
 
-// Mail setup
-var nodemailer     = require('nodemailer');
-var handlebars     = require('handlebars');
-var fs             = require('fs');
-
-var transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSWORD
-    }
-});
-
-//const mailOptions = {};
-
-var readHTMLFile = function(path, callback) {
-    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
-        if (err) {
-            throw err;
-            callback(err);
-        }
-        else {
-            callback(null, html);
-        }
-    });
-};
-
 
 var tripController = {
 
