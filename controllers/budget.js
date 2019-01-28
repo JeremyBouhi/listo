@@ -75,13 +75,12 @@ var budgetController = {
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
             var promise =  trip.users.map((user) => {
-                if(user._id == req.session.user._id.toString()){
-
-                    return {
-                        meanBudget: trip.budget,
-                        myBudget: user.budget
-                    }
-                }
+                    if(user._id == req.session.user._id.toString()){
+                        return {
+                            meanBudget: trip.budget,
+                            myBudget: user.budget
+                        }
+                    }                    
             })         
             
             Promise.all(promise).then(function(result) {
