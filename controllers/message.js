@@ -61,19 +61,22 @@ var messageController = {
 
     var iofile = require('../app.js');
     var io = iofile.io;
+    io = io({transports: ['websocket'], upgrade: false});
     var nsp = io.of('/chat');
+    var socketclients=[];
     
     nsp.on('connection', function(socket,pseudo){
+    console.log(socketclients);
     console.log('someone connected');
-    console.log(socket.id);
-
+    //console.log(socket.id);
+    socketclients.push(socket.id);   
     socket.on('nouveau_client', function(pseudo,tripId,topic) { 
         socket.pseudo = pseudo;
         console.log("new client connected !");
         var room = tripId+"/"+topic;
         socket.join(room);
         socket.broadcast.to(room).emit('nouveau_client', pseudo);
-        console.log(pseudo);
+        console.log(socketclients);
     });
   
       // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
