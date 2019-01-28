@@ -74,9 +74,10 @@ var surveyController = {
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
             // first check if the guy didn't vote for it before
-            if(!(trip[req.params.typeSurvey].survey[0].users_id.includes(req.session.user._id)))
+            var element_index = getIndex(trip[req.params.typeSurvey].survey, '_id', req.body.id)
+            if(!(trip[req.params.typeSurvey].survey[element_index].users_id.includes(req.session.user._id)))
                 // then we add his vote
-                trip[req.params.typeSurvey].survey[0].users_id.push(req.session.user._id)
+                trip[req.params.typeSurvey].survey[element_index].users_id.push(req.session.user._id)
             else {
                 res.status(401).send('Already voted');
                 console.log('T as déjà voté gros');
@@ -99,8 +100,9 @@ var surveyController = {
             // first check if the guy had already vote before
             // if(trip[req.params.typeSurvey].survey[0].users_id.includes(req.session.user._id.toString())){
                 // then we delete his vote
-                var index_user = getIndex(trip[req.params.typeSurvey].survey[0].users_id, '_id', req.session.user._id.toString())
-                trip[req.params.typeSurvey].survey[0].users_id.slice(index_user, 1)
+                var element_index = getIndex(trip[req.params.typeSurvey].survey, '_id', req.body.id)
+                var index_user = getIndex(trip[req.params.typeSurvey].survey[element_index].users_id, '_id', req.session.user._id.toString())
+                trip[req.params.typeSurvey].survey[element_index].users_id.slice(index_user, 1)
             // }
             // else {
                 // res.status(401).send('Are you sure vote before?');
@@ -118,7 +120,7 @@ var surveyController = {
     },
 
     deleteData: function(req, res){
-        
+
     }
 };
 
