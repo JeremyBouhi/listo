@@ -125,6 +125,10 @@ var userController = {
       var username = req.body.username;
       var email = req.body.email;
       var password = req.body.password;
+      var level = "Marin d'eau douce";
+      var avatar = 1;
+      var progress = 0;
+
 
       // Check if the email is already in database
       User.findOne({email : email}, async function(err, user){
@@ -134,11 +138,13 @@ var userController = {
           }
 
           if(!user) {
-              console.log("User not registered yet")
               var user = new User();
               user.username = username;
               user.email = email;
               user.password = password;
+              user.level = level;
+              user.progress = progress;
+              user.avatar = avatar;
 
               user.save((err, result) => {
                   if(err) {
@@ -147,7 +153,7 @@ var userController = {
                   }
                   else {
                       console.log("User added to database");
-                      res.status(200).send();
+                      res.status(200).send("User added to database");
                   }
               })
 

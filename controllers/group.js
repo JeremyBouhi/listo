@@ -225,7 +225,7 @@ var groupController = {
                             var mailOptions = {
                                 from: 'noreply.listo@gmail.com',
                                 to : email,
-                                subject : req.session.user.username +' invite le célèbre ' + user.username + ' pour la prochaine quête ' + trip_name +' !',
+                                subject : req.session.user.username + ' invite le ' + user.level + ' ' + user.username + ' pour la prochaine quête ' + trip_name +' !',
                                 html : htmlToSend,
                                 attachments: [{
                                     filename: 'logo.png',
