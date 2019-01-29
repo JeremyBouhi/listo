@@ -6,22 +6,21 @@ import Waiting from './../models/waiting'
 var tripController = {
 
     createTrip : function(req, res) {
-        console.log('req.session: ', req.session);
         if(!req.session.user) {
            console.log('You are not logged')
            return res.status(401).send();
         }
-        console.log('req.body: ', req.body);
-        console.log('req.session.user: ', req.session.user);
         var name = req.body.name;
         var admin = req.session.user._id;
 
         var trip = new Trip();
         trip.name = name;
         trip.admin = admin;
+        trip.badges.admin = admin;
         trip.users.push(admin.toString());
 
         req.session.user.trips.push(trip._id.toString());
+        //var trip_id = trip._id;
 
         trip.save((err, result) => {
             if(err) {
@@ -168,6 +167,25 @@ var tripController = {
             }
 
             res.status(200).send(trip);
+        })
+    },
+
+    isAdmin : function(req, res) {
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                res.status(500).send();
+            }
+            if(trip.admin != req.session.user._id) {
+                console.log("You are not the admin of this trip");
+                res.status(401).send();
+            }
+            else {
+                console.log("You are the admin of this trip");
+                res.status(200).send();
+            }
+
+
         })
     }
 };

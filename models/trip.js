@@ -15,6 +15,11 @@ var tripSchema = mongoose.Schema({
             color: String,
             users_id: [],
             custom_id : String
+<<<<<<< HEAD
+=======
+        },{
+            _id : false
+>>>>>>> zouaveries
         }]
     },
     destination : {
@@ -52,6 +57,14 @@ var tripSchema = mongoose.Schema({
         accommodation: {type:Number, default: 0},
         on_the_spot: {type:Number, default: 0},
         total: {type:Number, default: 0}
+    },
+    badges: {
+        destination: {type:String, default:''},
+        date: {type:String, default:''},
+        winner:{type:String, default:''},
+        loser:{type:String, default:''},
+        budget:{type:String, default:''},
+        admin:{type:String, default:''}
     }
 });
 

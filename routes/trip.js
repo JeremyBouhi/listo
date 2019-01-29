@@ -14,6 +14,7 @@ router.post('/createTrip', tripController.createTrip);
 router.put('/:tripId/editTrip', tripController.editTrip);
 router.put('/:tripId/deleteTrip', tripController.deleteTrip);
 router.get('/:tripId', tripController.getTripInfo);
+router.get('/:tripId/isAdmin', tripController.isAdmin);
 
 router.put('/:tripId/addUser', groupController.addUser);
 router.get('/:tripId/getGroup', groupController.getGroup);
