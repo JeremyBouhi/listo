@@ -14,7 +14,7 @@ var tripSchema = mongoose.Schema({
             end_date: String,
             color: String,
             users_id: [],
-            custom_id : Number
+            custom_id : String
         }]
     },
     destination : {
