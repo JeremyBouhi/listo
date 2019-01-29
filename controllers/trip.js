@@ -172,6 +172,25 @@ var tripController = {
 
             res.status(200).send(trip);
         })
+    },
+
+    isAdmin : function(req, res) {
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                res.status(500).send();
+            }
+            if(trip.admin != req.session.user._id) {
+                console.log("You are not the admin of this trip");
+                res.status(401).send();
+            }
+            else {
+                console.log("You are the admin of this trip");
+                res.status(200).send();
+            }
+
+
+        })
     }
 
 

@@ -81,6 +81,7 @@ var groupController = {
 
         var email = req.body.email;
         var trip_id = req.params.tripId;
+        var trip_name;
         var isInTrip = false;
         var exist = false;
 
@@ -88,6 +89,21 @@ var groupController = {
         waiting.email = email;
         waiting.trip = trip_id;
         waiting.isInDatabase = false;
+
+        // Get Trip name
+        Trip.findOne({_id : trip_id }, function (err, trip){
+            if(err) {
+                console.log("Error when using find one");
+                return res.status(500).send();
+            }
+
+            if(!trip) {
+                console.log("Trip %s not found", trip_id);
+                return res.status(404).send();
+            }
+
+            trip_name = trip.name;
+        })
 
         // Check if user is already in waiting list for this trip
         await Waiting.findOne({email : waiting.email, trip : waiting.trip }, function (err, waiting){
@@ -130,14 +146,20 @@ var groupController = {
                     readHTMLFile('./templates/emailNotInDb.html', function(err, html) {
                         var template = handlebars.compile(html);
                         var replacements = {
-                             username: req.session.user.username
+                             username: req.session.user.username,
+                             trip: trip_name
                         };
                         var htmlToSend = template(replacements);
                         var mailOptions = {
                             from: 'noreply.listo@gmail.com',
                             to : email,
-                            subject : 'Organise ton voyage avec '+ req.session.user.username +' sur Listo !',
-                            html : htmlToSend
+                            subject : req.session.user.username +" t'invite à rejoindre son équipage pour la prochaine quête " + trip_name +' !',
+                            html : htmlToSend,
+                            attachments: [{
+                                filename: 'logo.png',
+                                path: './images/logo.png',
+                                cid: 'logo' //same cid value as in the html img src
+                            }]
                          };
 
                          transporter.sendMail(mailOptions, function (err, info) {
@@ -196,14 +218,20 @@ var groupController = {
                             var template = handlebars.compile(html);
                             var replacements = {
                                  username1: req.session.user.username,
-                                 username2: user.username
+                                 username2: user.username,
+                                 trip: trip_name
                             };
                             var htmlToSend = template(replacements);
                             var mailOptions = {
                                 from: 'noreply.listo@gmail.com',
                                 to : email,
-                                subject : req.session.user.username +' invite le célèbre ' + user.username + ' pour la prochaine quête !',
-                                html : htmlToSend
+                                subject : req.session.user.username +' invite le célèbre ' + user.username + ' pour la prochaine quête ' + trip_name +' !',
+                                html : htmlToSend,
+                                attachments: [{
+                                    filename: 'logo.png',
+                                    path: './images/logo.png',
+                                    cid: 'logo' //same cid value as in the html img src
+                                }]
                              };
 
                              transporter.sendMail(mailOptions, function (err, info) {
