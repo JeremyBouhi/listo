@@ -1,5 +1,6 @@
 import Trip from './../models/trip'
 import User from './../models/user'
+// var curl = require('curl')
 
 var getIndex = function(arr, attr, value){
     var i = arr.length;
@@ -105,7 +106,14 @@ var budgetController = {
     }).catch((err) => {
         res.status(500).send(err)
     })
-}
+},
+
+    // estimateOnTheSpot : function(req, res){
+
+    //     curl.get('http://www.numbeo.com:8008/api/country_indices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+country_name, options, function(err, response, body) {
+            
+    //     });
+    // }
     
 };
 

@@ -180,7 +180,12 @@ var surveyController = {
         }).catch((err) => {
             console.log('err: ', err);
             res.status(500).send('ça marche despi')})
-    }
+    },
+
+    // validateData : function(req, res){
+        // Trip.findOne({_id : req.params.tripId
+        // }).then((trip) => {
+    // }
 };
 
 module.exports = surveyController;

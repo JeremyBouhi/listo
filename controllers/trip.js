@@ -83,7 +83,6 @@ var tripController = {
             //req.session.user = user;
             console.log('Name is changed ! It is now %s', trip.name);
 
-
             trip.save(function (err, updatedTrip) {
                 if(err) {
                     console.log("There is an error in modifying trip in database");
@@ -91,9 +90,7 @@ var tripController = {
                 }
                 else res.status(200).send();
             });
-
         })
-
     },
 
     deleteTrip : function(req, res) {
@@ -173,8 +170,6 @@ var tripController = {
             res.status(200).send(trip);
         })
     }
-
-
 };
 
 module.exports = tripController;
