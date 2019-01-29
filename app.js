@@ -10,7 +10,8 @@ var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
 var cors           = require('cors');
 var env            = require('dotenv').config();
-
+var ent            = require('ent');
+import Message from './models/message'
 // config files
 var db = require('./config/db');
 mongoose.connect(db.url,{ useNewUrlParser: true });
@@ -25,8 +26,48 @@ var port = process.env.PORT || 8080;
 // start app ===============================================
 // startup our app at http://localhost:8080
 var server = app.listen(port);
-
 var io = require('socket.io').listen(server);
+var nsp = io.of('/chat');
+nsp.on('connection', function(socket,pseudo){
+    console.log('someone connected');
+
+    socket.on('nouveau_client', function(pseudo,tripId,topic) { 
+        socket.pseudo = pseudo;
+        console.log("new client connected !");
+        var room = tripId+"/"+topic;
+        socket.join(room);
+        socket.broadcast.to(room).emit('nouveau_client', pseudo);
+    });
+
+    // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
+    socket.on('message', function (message,tripId,topic,iduser) {
+        var messageReceived = ent.encode(message);
+        var room = tripId+"/"+topic;
+        socket.join(room);
+        socket.broadcast.to(room).emit('message',{pseudo:socket.pseudo,message:messageReceived});
+        console.log("message envoyé à tout le monde");
+        var datetime = new Date();//Retrieve time but with 1 hour less
+        datetime.setTime(datetime.getTime() - new Date().getTimezoneOffset()*60*1000);//Set the correct time
+        var messagedb=new Message({
+            trip_id : tripId,
+            content : messageReceived,
+            sender : iduser,
+            topic : topic,
+            date : datetime
+            });
+
+        messagedb.save((err, res) => {
+            if(err) {
+                console.log("err : "+err);
+                console.log("There is an error in adding message in database");
+            }
+    });
+    });
+
+    socket.on("disconnect",function(data){
+        socket.disconnect();
+    });
+});
 
 app.get('/:tripId/:topic/chat', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -110,4 +151,4 @@ app.use('/overview', overviewRoutes);
 console.log('RDV au port ' + port);
 
 // expose app
-exports = module.exports = {app : app, io:io};
+exports = module.exports = app;

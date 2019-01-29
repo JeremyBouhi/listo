@@ -70,14 +70,18 @@ var listController = {
                     element.difficulty=req.body.difficulty;
                     element.status=req.body.status;
                     element.usersInvolved=req.body.usersInvolved;
+                    console.log(element);
                     trip.save(function (err, updatedTrip) {
                         if(err) {
                             console.log("There is an error in modifying trip in database");
+                            console.log("err : "+ err);
                             res.status(500).send();
                         }
-                        else res.status(200).send();
+                        else {
+                            console.log("Element of list modified in database");
+                            res.status(200).send();
+                        }    
                     });
-                    console.log("Element of list modified in database");
                 }
             });
         })
