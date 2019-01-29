@@ -8,18 +8,14 @@ var tripSchema = mongoose.Schema({
     date : {
         validated : {type : Boolean, default: 0},
         deadline: Date,
-        final_date: String,
+        final_start_date: String,
+        final_end_date: String,
         survey: [{
             start_date: String,
             end_date: String,
             color: String,
             users_id: [],
             custom_id : String
-<<<<<<< HEAD
-=======
-        },{
-            _id : false
->>>>>>> zouaveries
         }]
     },
     destination : {

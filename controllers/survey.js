@@ -120,6 +120,10 @@ var surveyController = {
     // },
 
     editData : function(req, res){
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401).send();
+        }
 
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
@@ -147,6 +151,10 @@ var surveyController = {
     },
 
     deleteData: function(req, res){
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401).send();
+        }
 
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
@@ -182,10 +190,38 @@ var surveyController = {
             res.status(500).send('ça marche despi')})
     },
 
-    // validateData : function(req, res){
-        // Trip.findOne({_id : req.params.tripId
-        // }).then((trip) => {
-    // }
+    validateData : function(req, res){
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401).send();
+        }
+        
+        Trip.findOne({_id : req.params.tripId
+        }).then((trip) => {
+            
+            if(req.params.typeSurvey == 'destination')
+            {
+                trip[req.params.typeSurvey].final_destination = req.body.destination_name
+            }
+
+            else if(req.params.typeSurvey == 'date')
+            {
+                trip[req.params.typeSurvey].final_start_date = req.body.start_date
+                trip[req.params.typeSurvey].final_end_date = req.body.end_date
+            }
+            trip[req.params.typeSurvey].validated = 1
+        
+        trip.save((err, result) => {
+            if(err) {
+                    console.log('err: ', err);
+                    res.status(500).send("There is an error in validating data in db");
+                    }
+                else res.status(200).send();
+            });
+        }).catch((err) => {
+            console.log('err: ', err);
+            res.status(500).send("Can't validate")})
+    }
 };
 
 module.exports = surveyController;
