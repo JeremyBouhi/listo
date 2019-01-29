@@ -19,9 +19,6 @@ var tripController = {
         trip.badges.admin = admin;
         trip.users.push(admin.toString());
 
-        req.session.user.trips.push(trip._id.toString());
-        //var trip_id = trip._id;
-
         trip.save((err, result) => {
             if(err) {
                 console.log("There is an error in adding trip in database");
@@ -42,8 +39,10 @@ var tripController = {
                 return res.status(404).send();
             }
 
-            user.trips = req.session.user.trips;
-            console.log("Trips saved in database : ", user.trips);
+
+            user.trips.push(trip._id.toString());
+            req.session.user = user;
+
 
             user.save((err, result) => {
                 if(err) {
@@ -79,7 +78,6 @@ var tripController = {
             console.log("Original name : %s", oldName);
             console.log("New name : %s", newName);
             trip.name = newName;
-            //req.session.user = user;
             console.log('Name is changed ! It is now %s', trip.name);
 
             trip.save(function (err, updatedTrip) {

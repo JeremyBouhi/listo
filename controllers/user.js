@@ -153,7 +153,7 @@ var userController = {
                   }
                   else {
                       console.log("User added to database");
-                      res.status(200).send("User added to database");
+                      res.status(200).send();
                   }
               })
 
