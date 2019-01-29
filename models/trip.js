@@ -15,11 +15,6 @@ var tripSchema = mongoose.Schema({
             color: String,
             users_id: [],
             custom_id : String
-<<<<<<< HEAD
-=======
-        },{
-            _id : false
->>>>>>> zouaveries
         }]
     },
     destination : {
