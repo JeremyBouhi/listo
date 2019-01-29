@@ -129,7 +129,7 @@ var surveyController = {
             var element_index = getIndex(trip[req.params.typeSurvey].survey, 'custom_id', req.body.custom_id)
 
             trip[req.params.typeSurvey].survey[element_index].start_date = req.body.start_date     
-            trip[req.params.typeSurvey].survey[element_index].end_date = req.body.start_date     
+            trip[req.params.typeSurvey].survey[element_index].end_date = req.body.end_date     
             trip[req.params.typeSurvey].survey[element_index].color = req.body.color     
             }
 
