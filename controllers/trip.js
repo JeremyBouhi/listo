@@ -169,18 +169,24 @@ var tripController = {
     },
 
     isAdmin : function(req, res) {
+
+        if(!req.session.user) {
+            console.log('You are not logged')
+            return res.status(401);
+        }
+
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
                 console.log(err);
-                res.status(500).send();
+                res.status(500);
             }
             if(trip.admin != req.session.user._id) {
                 console.log("You are not the admin of this trip");
-                res.status(401).send();
+                res.status(401).send(false);
             }
             else {
                 console.log("You are the admin of this trip");
-                res.status(200).send();
+                res.status(200).send(true);
             }
 
 

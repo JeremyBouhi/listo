@@ -2,8 +2,6 @@ var router = require('express').Router();
 
 // Controller
 import tripController from './../controllers/trip';
-// import destinationController from './../controllers/destination';
-// import datesController from './../controllers/dates';
 import messageController from '../controllers/message';
 import listController from './../controllers/list';
 import groupController from './../controllers/group';
@@ -23,9 +21,6 @@ router.put('/:tripId/removeUser', groupController.removeUser);
 router.post('/:tripId/:topic/sendMessage', messageController.sendMessage);
 router.get('/:tripId/:topic/getChat', messageController.getChat);
 
-// router.post('/:tripId/addDestination', destinationController.addDestination);
-// router.post('/:tripId/addDates', datesController.addDates);
-
 router.post('/:tripId/:typeSurvey/addData', surveyController.addData);
 router.put('/:tripId/:typeSurvey/deleteData', surveyController.deleteData);
 router.put('/:tripId/:typeSurvey/editData', surveyController.editData);
@@ -36,7 +31,6 @@ router.post('/:tripId/:typeSurvey/validateData', surveyController.validateData);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);
-
 
 router.get('/:tripId/:typelist/get', listController.get);
 router.put('/:tripId/:typelist/add', listController.add);
