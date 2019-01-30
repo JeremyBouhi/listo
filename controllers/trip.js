@@ -182,7 +182,7 @@ var tripController = {
             }
             if(trip.admin != req.session.user._id) {
                 console.log("You are not the admin of this trip");
-                res.status(401).send(false);
+                res.status(200).send(false);
             }
             else {
                 console.log("You are the admin of this trip");
