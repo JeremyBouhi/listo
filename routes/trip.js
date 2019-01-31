@@ -9,6 +9,7 @@ import surveyController from './../controllers/survey';
 import budgetController from './../controllers/budget';
 
 router.post('/createTrip', tripController.createTrip);
+router.get('/:tripId/getTripInfo', tripController.getTripInfo);
 router.put('/:tripId/editTrip', tripController.editTrip);
 router.put('/:tripId/deleteTrip', tripController.deleteTrip);
 router.get('/:tripId', tripController.getTripInfo);
