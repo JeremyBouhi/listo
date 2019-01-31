@@ -191,6 +191,17 @@ var tripController = {
 
 
         })
+    },
+
+    getFinalDestination: function(req, res) {
+
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                res.status(500);
+            }
+            res.status(200).send(trip.destination.final_destination)
+        })
     }
 };
 
