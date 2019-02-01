@@ -51,7 +51,21 @@ var tripController = {
                     console.log("There is an error in modifying user in database");
                     res.status(500).send();
                 }
-                else res.status(200).send();
+                else 
+                {
+                    if("queryResult" in req.body)
+                    {
+                var speech = "Le voyage "+name+ "a été créé";
+                res.json({
+                    "fulfillmentText": speech
+                        });
+                     }
+                    else
+                    {
+                        res.status(200).send();
+                    }
+                }
+                
             })
         })
     },

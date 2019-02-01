@@ -24,7 +24,29 @@ var userController = {
             console.log('Welcome back on Listo %s el loco', user.username);
             user_id = user._id.toString();
             req.session.user = user;
-            res.status(200).send();
+
+            //dialogflow response
+            if("queryResult" in req.body)
+            {
+                var speech = "Bienvenue sur Listo "+user.username;
+                res.json({
+                    "fulfillmentText": speech,
+                    "outputContexts": [
+                        {
+                          "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/session",
+                          "lifespanCount": 50,
+                          "parameters": {
+                            "param": user
+                          }
+                        }
+                      ],
+                });
+            }
+            else
+            {
+                res.status(200).send();
+            }
+            
         })
 
 
