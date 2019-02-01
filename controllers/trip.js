@@ -39,7 +39,7 @@ var tripController = {
                 return res.status(404).send();
             }
 
-
+            user.badges.admin += 1;
             user.trips.push(trip._id.toString());
             req.session.user = user;
 
