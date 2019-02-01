@@ -221,13 +221,6 @@ var surveyController = {
         }).catch((err) => {
             console.log('err: ', err);
             res.status(500).send("Can't validate")})
-    },
-
-    getPriceItemByDestination : function(req, res){
-
-        curl.get('http://www.numbeo.com:8008/api/country_indices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.body.destination, options, function(err, response, body) {
-            
-        });
     }
 };
 

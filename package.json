@@ -29,6 +29,8 @@
     "mongoose": "^5.4.2",
     "nodemailer": "^5.1.1",
     "path": "^0.12.7",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {

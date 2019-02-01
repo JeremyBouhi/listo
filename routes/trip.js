@@ -33,6 +33,7 @@ router.post('/:tripId/:typeSurvey/validateData', surveyController.validateData);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);
+router.get('/:tripId/getPriceItemByDestination/:destinations', budgetController.getPriceItemByDestination);
 
 router.get('/:tripId/:typelist/get', listController.get);
 router.put('/:tripId/:typelist/add', listController.add);

@@ -17,7 +17,7 @@ var overviewController = {
                 }).then((trip)=>{
                     return trip;
                 }).catch((err) => res.status(500).send(err))
-            })           
+            })      
             
             Promise.all(promises).then(function(trips) {
                 console.log(trips)

@@ -1,6 +1,6 @@
 import Trip from './../models/trip'
 import User from './../models/user'
-// var curl = require('curl')
+var request = require('request-promise')
 
 var getIndex = function(arr, attr, value){
     var i = arr.length;
@@ -106,8 +106,50 @@ var budgetController = {
     }).catch((err) => {
         res.status(500).send(err)
     })
+},
+
+    getPriceItemByDestination : async function(req, res){
+
+console.log(req.params.destinations);
+// curl.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destinations, function(err, response, body) {
+//         // console.log('body', body);
+//         body = JSON.parse(body)
+//         body.prices = body.prices.filter(function (el) {
+//             return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
+//         });
+
+//             res.status(200).send(body)
+//     })
+        
+// ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
+
+    var destinations = req.params.destinations.split(',');
+    console.log('destinations: ', destinations);
+    var promises = destinations.map( async (destination) => {
+        console.log('destination: ', destination);
+        return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, function(err, response, body) {
+            return(body);
+        })
+    })
+            
+
+        Promise.all(promises).then(function(countries) {
+            console.log('countries: ', countries);
+            
+
+            countries.map((country)=>{
+                country = JSON.parse(country)
+            })
+            // JSON.strifigy(countries)
+            
+            // JSON.parse(countries[0]) 
+            countries.prices = countries.prices.filter(function (el) {
+                return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
+            });
+
+            res.status(200).send(countries)
+        })    
+    }
 }
-    
-};
 
 module.exports = budgetController;
