@@ -26,7 +26,8 @@ var port = process.env.PORT || 8080;
 // start app ===============================================
 // startup our app at http://localhost:8080
 var server = app.listen(port);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server,{ origins: '*:*'});
+
 var nsp = io.of('/chat');
 nsp.on('connection', function(socket,pseudo){
     console.log('someone connected');
