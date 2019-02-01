@@ -35,14 +35,14 @@
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
             var tripId='123',topic='12345';
-            var iduser='5c471ee21055881d48f6c0f7';
+            var iduser='5c5477825662b82af4ec16f4';
             socket.emit('nouveau_client', pseudo,tripId,topic);
             document.title = pseudo + ' - ' + document.title;
 
 
             // Quand on reçoit un message, on l'insère dans la page
-            socket.on('message', function(message) {
-                insereMessage(message)
+            socket.on('message', function(data) {
+                insereMessage(data.username,data.message)
             })
 
             // Quand un nouveau client se connecte, on affiche l'information
@@ -60,8 +60,8 @@
             });
             
             // Ajoute un message dans la page
-            function insereMessage(message) {
-                $('#zone_chat').prepend('<p>' + '</strong> ' + message + '</p>');
+            function insereMessage(pseudo, message) {
+                $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
             }
         </script>
     </body>
