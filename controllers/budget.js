@@ -108,46 +108,30 @@ var budgetController = {
     })
 },
 
-    getPriceItemByDestination : async function(req, res){
-
-console.log(req.params.destinations);
-// curl.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destinations, function(err, response, body) {
-//         // console.log('body', body);
-//         body = JSON.parse(body)
-//         body.prices = body.prices.filter(function (el) {
-//             return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
-//         });
-
-//             res.status(200).send(body)
-//     })
+    getPriceItemByDestination : async function(req, res){        
         
-// ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
-
-    var destinations = req.params.destinations.split(',');
-    console.log('destinations: ', destinations);
-    var promises = destinations.map( async (destination) => {
-        console.log('destination: ', destination);
-        return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, function(err, response, body) {
-            return(body);
-        })
-    })
-            
-
-        Promise.all(promises).then(function(countries) {
-            console.log('countries: ', countries);
-            
-
-            countries.map((country)=>{
-                country = JSON.parse(country)
+        var destinations = req.params.destinations.split(',');
+        console.log('destinations: ', destinations);
+        var promises = destinations.map( async (destination) => {
+            console.log('destination: ', destination);
+            return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, function(err, response, body) {
+                return(body);
             })
-            // JSON.strifigy(countries)
+        })
+        
+        Promise.all(promises).then(function(countries) {
             
-            // JSON.parse(countries[0]) 
-            countries.prices = countries.prices.filter(function (el) {
-                return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
-            });
-
-            res.status(200).send(countries)
+            var tonton = countries.map((country)=>{
+                country = JSON.parse(country)
+                country.prices = country.prices.filter(function (el) {
+                    return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
+                    // ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
+                });
+                return country;
+            })
+            
+            console.log('tonton: ', tonton);
+            res.status(200).send(tonton)
         })    
     }
 }
