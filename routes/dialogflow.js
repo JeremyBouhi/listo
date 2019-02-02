@@ -15,8 +15,26 @@ router.post("/", function(req, res) {
     if("name_trip" in req.body.queryResult.parameters)
     {
         console.log('dialogflow creation trip');
-        req.session.user=req.body.queryResult.outputContexts[0].parameters.param;
-        console.log("req session  :"+req.session.user);
+        var element=req.body.queryResult.outputContexts.filter(item=>item.name.includes('contexts/session'));
+        element=element[0].parameters.param;
+        element=JSON.stringify(element);
+        element=JSON.parse(element);
+      
+        req.session.user=element;
+        console.log("req session  _id:"+req.session.user._id);
+        req.body.name = req.body.queryResult.parameters.name_trip;
+        tripController.createTrip(req,res);
+    }
+    if("startDate" in req.body.queryResult.parameters)
+    {
+        console.log('dialogflow editDate trip');
+        var element=req.body.queryResult.outputContexts.filter(item=>item.name.includes('contexts/session'));
+        element=element[0].parameters.param;
+        element=JSON.stringify(element);
+        element=JSON.parse(element);
+      
+        req.session.user=element;
+        console.log("req session  _id:"+req.session.user._id);
         req.body.name = req.body.queryResult.parameters.name_trip;
         tripController.createTrip(req,res);
     }

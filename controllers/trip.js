@@ -47,24 +47,29 @@ var tripController = {
                 if(err) {
                     console.log('err: ', err);
                     console.log("There is an error in modifying user in database");
-                    res.status(500).send();
-                }
-                else 
-                {
-                    if("queryResult" in req.body)
+                    return res.status(500).send();
+                }                
+            })
+            if("queryResult" in req.body)
                     {
-                var speech = "Le voyage "+name+ "a été créé";
-                res.json({
-                    "fulfillmentText": speech
+                        var speech = "Le voyage "+name+ " a été créé";
+                        res.json({
+                            "fulfillmentText": speech,
+                            "outputContexts": [
+                                {
+                                  "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/session",
+                                  "lifespanCount": 50,
+                                  "parameters": {
+                                    "param": user
+                                  }
+                                }
+                              ],
                         });
                     }
                     else
                     {
                         res.status(200).send();
                     }
-                }
-                
-            })
         })
     },
 
