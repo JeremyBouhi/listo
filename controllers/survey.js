@@ -1,6 +1,8 @@
 import Trip from './../models/trip'
 import User from './../models/user'
 
+import tripController from './trip'
+
 
 // Remove Object from array by attribut
 var getIndex = function(arr, attr, value){
@@ -280,14 +282,17 @@ var surveyController = {
 
         trip.save((err, result) => {
             if(err) {
-                    console.log('err: ', err);
-                    res.status(500).send("There is an error in validating data in db");
+                    res.status(500).send(err);
                     }
-                else res.status(200).send();
+                else {
+                    tripController.updateState(req, res)
+                    res.status(200)
+                };
             });
         }).catch((err) => {
-            console.log('err: ', err);
-            res.status(500).send("Can't validate")})
+            res.status(500).send(err)})
+
+            
     },
 
     saveDeadline: function(req, res){

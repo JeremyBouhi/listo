@@ -225,7 +225,6 @@ var tripController = {
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
                 console.log(err);
-                res.status(500);
             }
             var state = 0;
 
@@ -235,28 +234,27 @@ var tripController = {
             if(trip.date.validated){
                 state += 32;
             }
-            if(trip.toDoList.status){
-                console.log('trip.toDoList.length: ', trip.toDoList.length);
                 
-                    if(trip.toDoList.length>1) {
-                    trip.toDoList.map((element) => {
-                        if(element.status)
-                            state += 36/trip.toDoList.length;
-                    })
-                }
+            console.log('trip.toDoList.length: ', trip.toDoList.length);
+                
+            if(trip.toDoList.length>1) {
+                trip.toDoList.map((element) => {
+                    if(element.status)
+                        state += 36/trip.toDoList.length;
+                })
             }
+            
             trip.state = state
             console.log('state: ', state);
 
             trip.save((err, result) => {
                 if(err) {
-                    res.status(500).send(err);
+                    console.log(err);;
                 }
-                else res.status(200);
             });
     
             }).catch((err) => {
-                res.status(500).send(err)})
+                console.log(err);})
     }
 };
 
