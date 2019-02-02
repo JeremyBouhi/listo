@@ -35,14 +35,14 @@
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
             var tripId='123',topic='12345';
-            var iduser='5c5477825662b82af4ec16f4';
-            socket.emit('nouveau_client', pseudo,tripId,topic);
+            var iduser='5c5579757d4c2102b07a9178';
+            socket.emit('nouveau_client', tripId,topic);
             document.title = pseudo + ' - ' + document.title;
 
 
             // Quand on reçoit un message, on l'insère dans la page
             socket.on('message', function(data) {
-                insereMessage(data.username,data.message)
+                insereMessage(data.sender,data.content)
             })
 
             // Quand un nouveau client se connecte, on affiche l'information
