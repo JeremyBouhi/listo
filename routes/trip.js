@@ -28,6 +28,7 @@ router.put('/:tripId/:typeSurvey/deleteData', surveyController.deleteData);
 router.put('/:tripId/:typeSurvey/editData', surveyController.editData);
 router.get('/:tripId/:typeSurvey/getData', surveyController.getData);
 router.post('/:tripId/:typeSurvey/validateData', surveyController.validateData);
+router.post('/:tripId/:typeSurvey/saveDeadline', surveyController.saveDeadline);
 // router.post('/:tripId/:typeSurvey/addVote', surveyController.addVote);
 // router.post('/:tripId/:typeSurvey/deleteVote', surveyController.deleteVote);
 

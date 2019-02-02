@@ -288,6 +288,29 @@ var surveyController = {
         }).catch((err) => {
             console.log('err: ', err);
             res.status(500).send("Can't validate")})
+    },
+
+    saveDeadline: function(req, res){
+
+        if(!req.session.user){
+            console.log("Problem when accessing information of user");
+            res.status(401);
+        }
+
+        Trip.findOne({_id : req.params.tripId
+        }).then((trip) => {
+        
+        trip[req.params.typeSurvey].deadline = req.body.deadline
+
+        trip.save((err, result) => {
+            if(err) {
+                res.status(500).send(err);
+            }
+            else res.status(200);
+        });
+
+        }).catch((err) => {
+            res.status(500).send(err)})
     }
 };
 

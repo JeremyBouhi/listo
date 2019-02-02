@@ -2,7 +2,6 @@ import Trip from './../models/trip'
 import User from './../models/user'
 import Waiting from './../models/waiting'
 
-
 var tripController = {
 
     createTrip : function(req, res) {
@@ -58,7 +57,7 @@ var tripController = {
                 res.json({
                     "fulfillmentText": speech
                         });
-                     }
+                    }
                     else
                     {
                         res.status(200).send();
@@ -107,8 +106,8 @@ var tripController = {
     deleteTrip : function(req, res) {
 
         if(!req.session.user) {
-           console.log('You are not logged')
-           return res.status(401).send();
+            console.log('You are not logged')
+            return res.status(401).send();
         }
 
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
@@ -177,7 +176,6 @@ var tripController = {
                 console.log(err);
                 return res.status(500).send();
             }
-
             res.status(200).send(trip);
         })
     },
@@ -208,7 +206,6 @@ var tripController = {
     },
 
     getFinalDestination: function(req, res) {
-
         Trip.findOne({_id : req.params.tripId}, function(err, trip) {
             if(err) {
                 console.log(err);
@@ -216,6 +213,50 @@ var tripController = {
             }
             res.status(200).send(trip.destination.final_destination)
         })
+    },
+
+    
+    updateState: function(req, res) {
+        // state prend en compte si :
+            // date validée
+            // destination validée
+            // les todo sont done
+
+        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+            if(err) {
+                console.log(err);
+                res.status(500);
+            }
+            var state = 0;
+
+            if(trip.destination.validated){
+                state += 32;
+            }
+            if(trip.date.validated){
+                state += 32;
+            }
+            if(trip.toDoList.status){
+                console.log('trip.toDoList.length: ', trip.toDoList.length);
+                
+                    if(trip.toDoList.length>1) {
+                    trip.toDoList.map((element) => {
+                        if(element.status)
+                            state += 36/trip.toDoList.length;
+                    })
+                }
+            }
+            trip.state = state
+            console.log('state: ', state);
+
+            trip.save((err, result) => {
+                if(err) {
+                    res.status(500).send(err);
+                }
+                else res.status(200);
+            });
+    
+            }).catch((err) => {
+                res.status(500).send(err)})
     }
 };
 

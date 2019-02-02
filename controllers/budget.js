@@ -114,7 +114,12 @@ var budgetController = {
         console.log('destinations: ', destinations);
         var promises = destinations.map( async (destination) => {
             console.log('destination: ', destination);
-            return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, function(err, response, body) {
+            return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, {
+                ca: [
+                  fs.readFileSync('Corp Issuing Server.pem'),
+                  fs.readFileSync('Corp Root CA.pem')
+                ]}
+                ,function(err, response, body) {
                 return(body);
             })
         })
