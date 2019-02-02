@@ -229,8 +229,8 @@ var surveyController = {
                     user.badges.destination += 1;
                     user.save((err, result) => {
                         if(err) {
-                            console.log("There is an error in modifyng user in database");
-                            res.status(500).send("There is an error in modifyng user in database");
+                            console.log("There is an error in modifiyng user in database");
+                            res.status(500).send("There is an error in modifiyng user in database");
                         }
                         else {
                             console.log("User successfully modified");
@@ -266,8 +266,8 @@ var surveyController = {
                     user.badges.date += 1;
                     user.save((err, result) => {
                         if(err) {
-                            console.log("There is an error in modifyng user in database");
-                            res.status(500).send("There is an error in modifyng user in database");
+                            console.log("There is an error in modifiyng user in database");
+                            res.status(500).send("There is an error in modifiyng user in database");
                         }
                         else {
                             console.log("User successfully modified");
