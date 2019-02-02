@@ -36,17 +36,15 @@ var nsp = io.of('/chat');
 nsp.on('connection', function(socket,pseudo){
     console.log('someone connected');
 
-    socket.on('nouveau_client', function(pseudo,tripId,topic) { 
-        socket.pseudo = pseudo;
+    socket.on('nouveau_client', function(tripId,topic) { 
         console.log("new client connected !");
         var room = tripId+"/"+topic;
         socket.join(room);
-        socket.broadcast.to(room).emit('nouveau_client', pseudo);
+        socket.broadcast.to(room).emit('nouveau_client');
     });
 
     // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
     socket.on('message', function (message,tripId,topic,iduser) {
-
         return User.findOne({_id:iduser}, function(err, user) {
                 if(err) {
                     console.log(err);
@@ -60,8 +58,6 @@ nsp.on('connection', function(socket,pseudo){
                 var messageReceived = ent.encode(message);
                 var room = tripId+"/"+topic;
                 socket.join(room);
-                socket.broadcast.to(room).emit('message',{username:user.username,message:messageReceived});
-                console.log("message envoyé à tout le monde");
                 var datetime = new Date();//Retrieve time but with 1 hour less
                 datetime.setTime(datetime.getTime() - new Date().getTimezoneOffset()*60*1000);//Set the correct time
                 var messagedb=new Message({
@@ -71,6 +67,9 @@ nsp.on('connection', function(socket,pseudo){
                     topic : topic,
                     date : datetime
                     });
+                socket.broadcast.to(room).emit('message',{sender:user.username,content:messageReceived,date:datetime});
+                console.log("message envoyé à tout le monde");
+                
 
                 messagedb.save((err, res) => {
                     if(err) {
