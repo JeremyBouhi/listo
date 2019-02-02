@@ -249,7 +249,7 @@ var tripController = {
 
             trip.save((err, result) => {
                 if(err) {
-                    console.log(err);;
+                    console.log(err);
                 }
             });
     
