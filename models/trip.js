@@ -62,7 +62,7 @@ var tripSchema = mongoose.Schema({
         budget:{type:String, default:''},
         admin:{type:String, default:''}
     },
-    state: Number
+    state: {type:Number, default: 0}
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
