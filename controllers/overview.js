@@ -4,10 +4,10 @@ import Trip from './../models/trip'
 var overviewController = {
 
     getAllTrips : async function(req, res) {
-        if(!req.session.user) {
-            console.log('You are not logged')
-            return res.status(401).send();
-        }
+        // if(!req.session.user) {
+        //     console.log('You are not logged')
+        //     return res.status(401).send();
+        // }
                 
         await User.findOne({_id : req.session.user._id
         }).then(async (user) => {
