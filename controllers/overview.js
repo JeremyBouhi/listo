@@ -4,7 +4,7 @@ import Trip from './../models/trip'
 var overviewController = {
 
     getAllTrips : async function(req, res) {
-        if(req.isAuthenticated()) {
+        if(!req.session.user) {
             console.log('You are not logged')
             return res.status(401).send();
         }
