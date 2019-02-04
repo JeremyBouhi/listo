@@ -59,12 +59,12 @@ var tripController = {
                             "fulfillmentText": speech1+"."+speech2,
                             "outputContexts": [
                                 {
-                                  "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/session",
+                                  "name": req.body.session+"/contexts/session",
                                   "lifespanCount": 50,
                                   "parameters": {
                                     "param": user
                                   },
-                                  "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/trip",
+                                  "name": req.body.session+"/contexts/trip",
                                   "lifespanCount": 50,
                                   "parameters": {
                                     "param": trip
