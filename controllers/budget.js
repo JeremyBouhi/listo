@@ -19,7 +19,6 @@ var indexOfMin = function(arr) {
     if (arr.length === 0) {
         return -1;
     }
-
     var min = arr[0];
     var minIndex = 0;
 
@@ -29,7 +28,6 @@ var indexOfMin = function(arr) {
             min = arr[i];
         }
     }
-
     return minIndex;
 }
 
