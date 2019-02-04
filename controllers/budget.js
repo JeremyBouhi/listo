@@ -112,7 +112,7 @@ var budgetController = {
         
         var destinations = req.params.destinations.split(',');
         console.log('destinations: ', destinations);
-        var promises = destinations.map( async (destination) => {
+        var promises = await destinations.map((destination) => {
             console.log('destination: ', destination);
             return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, 
             res.header('Access-Control-Allow-Origin', req.headers.origin),
@@ -133,7 +133,7 @@ var budgetController = {
             })
             
             console.log('tonton: ', tonton);
-            res.status(200).send(tonton)
+            res.status(200).send(tonton);
         })    
     }
 }

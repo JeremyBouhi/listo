@@ -12,7 +12,7 @@ var userSchema = mongoose.Schema({
         loser: {type:Number, default:0},
         budget: {type:Number, default:0},
         admin: {type:Number, default:0},
-        level1: {type:Boolean, default:false}, // Marin d'eau douce
+        level1: {type:Boolean, default:true}, // Marin d'eau douce
         level2: {type:Boolean, default:false}, // Moussaillon
         level3: {type:Boolean, default:false}, // Vigie
         level4: {type:Boolean, default:false}, // Cannonier

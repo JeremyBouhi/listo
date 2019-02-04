@@ -18,7 +18,8 @@ mongoose.connect(db.url,{ useNewUrlParser: true });
 
 var store = new MongoDBStore({
     uri: db.url,
-    collection: 'mySessions'
+    collection: 'mySessions',
+    ttl: 24 * 60 * 60 // Keeps session open for 1 day
 });
 
 // set our port
