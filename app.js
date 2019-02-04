@@ -3,7 +3,7 @@ var express        = require('express');
 var path           = require('path');
 var app            = express();
 var session        = require('express-session');
-// var passport       = require('passport');
+var passport       = require('passport');
 var MongoDBStore   = require('connect-mongodb-session')(session);
 var bodyParser     = require('body-parser');
 var cookieParser   = require('cookie-parser');
@@ -125,15 +125,15 @@ app.use(session({
     store: store
 }));
 
-// app.use(passport.initialize());
-// app.use(passport.session()); // persistent login sessions
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
-// app.use((req, res, next) => {
-//     if (req.cookies.user_sid && !req.session.user) {
-//         res.clearCookie('user_sid');
-//     }
-//     next();
-// });
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid');
+    }
+    next();
+});
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
