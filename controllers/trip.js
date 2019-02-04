@@ -52,15 +52,22 @@ var tripController = {
             })
             if("queryResult" in req.body)
                     {
-                        var speech = "Le voyage "+name+ " a été créé";
+                        console.log(user);
+                        var speech1 = "Le voyage "+name+ " a été créé";
+                        var speech2 = "A quel destination souhaitez-vous vous rendre?";
                         res.json({
-                            "fulfillmentText": speech,
+                            "fulfillmentText": speech1+"."+speech2,
                             "outputContexts": [
                                 {
                                   "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/session",
                                   "lifespanCount": 50,
                                   "parameters": {
                                     "param": user
+                                  },
+                                  "name": "projects/listo-bf93f/agent/sessions/056081c6-e5c2-ccfc-9adf-1eeff00102d5/contexts/trip",
+                                  "lifespanCount": 50,
+                                  "parameters": {
+                                    "param": trip
                                   }
                                 }
                               ],

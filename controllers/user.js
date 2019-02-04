@@ -28,7 +28,7 @@ var userController = {
             //dialogflow response
             if("queryResult" in req.body)
             {
-                var speech = "Bienvenue sur Listo "+user.username;
+                var speech = "Bienvenue sur Listo "+user.username+".Quel nom de trip souhaitez-vous choisir?";
                 res.json({
                     "fulfillmentText": speech,
                     "outputContexts": [
@@ -140,6 +140,65 @@ var userController = {
 
         })
 
+    },
+
+    loginDialogflow: async function (req, res) {
+        //console.log(req.body);
+        var email = req.body.email;
+
+        await User.findOne({email:email}, function(err, user) {
+            if(err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+
+            if(!user) {
+                console.log('User not found');
+                return res.send(JSON.stringify({
+
+                    fulfillmentText:"L'email "+email+"n'a pas été trouvé. Pouvez-vous le répétez s'il vous plait?",
+                    outputContexts: [
+                        {
+                          "name": req.body.session+"/contexts/login",
+                          "lifespanCount": 1
+                        },
+                      ],
+                 }));
+            }
+            console.log('Welcome back on Listo %s el loco', user.username);
+            req.session.user = user;
+
+            //dialogflow response
+            if("queryResult" in req.body)
+            {
+                var speech = "Bienvenue sur Listo "+user.username+".Quel nom de trip souhaitez-vous choisir?";
+                res.json({
+                    "fulfillmentText": speech,
+                    "outputContexts": [
+                        {
+                          "name": req.body.session+"/contexts/session",
+                          "lifespanCount": 50,
+                          "parameters": {
+                            "param": user
+                          }
+                        },
+                        {
+                            "name": req.body.session+"/contexts/createTrip",
+                            "lifespanCount": 1
+                        },
+                        {
+                            "name": req.body.session+"/contexts/login",
+                            "lifespanCount": 0
+                        }
+                      ],
+                });
+            }
+            else
+            {
+                res.status(200).send();
+            }
+            
+        })
     },
 
   register: function (req, res) {
