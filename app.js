@@ -23,10 +23,14 @@ var store = new MongoDBStore({
 
 // set our port
 var port = process.env.PORT || 8080;
+
+
+
 // start app ===============================================
 // startup our app at http://localhost:8080
 var server = app.listen(port);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server,{ origins: '*:*'});
+
 var nsp = io.of('/chat');
 nsp.on('connection', function(socket,pseudo){
     console.log('someone connected');
@@ -44,7 +48,7 @@ nsp.on('connection', function(socket,pseudo){
         var messageReceived = ent.encode(message);
         var room = tripId+"/"+topic;
         socket.join(room);
-        socket.broadcast.to(room).emit('message',{pseudo:socket.pseudo,message:messageReceived});
+        socket.broadcast.to(room).emit('message',messageReceived);
         console.log("message envoyé à tout le monde");
         var datetime = new Date();//Retrieve time but with 1 hour less
         datetime.setTime(datetime.getTime() - new Date().getTimezoneOffset()*60*1000);//Set the correct time
@@ -128,6 +132,7 @@ var userRoutes      = require(path.join(__dirname, 'routes', 'user'));
 var tripRoutes      = require(path.join(__dirname, 'routes', 'trip'));
 // var messageRoutes   = require(path.join(__dirname, 'routes', 'message'));
 var overviewRoutes  = require(path.join(__dirname, 'routes', 'overview'));
+var dialogflowRoute  = require(path.join(__dirname, 'routes', 'dialogflow'));
 
 // Routes : API RESTful
 // =============================================================================
@@ -139,12 +144,7 @@ app.use('/users', userRoutes);
 app.use('/trips', tripRoutes);
 // app.use('/message', messageRoutes);
 app.use('/overview', overviewRoutes);
-
-
-
-// routes ==================================================
-// require('./back/routes')(app); // configure our routes
-
+app.use('/dialogflow', dialogflowRoute);
 
 
 // shoutout to the user

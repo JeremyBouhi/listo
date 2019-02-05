@@ -14,10 +14,29 @@ var getIndex = function(arr, attr, value){
     return index;
 }
 
+
+var indexOfMin = function(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+    var min = arr[0];
+    var minIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] < min) {
+            minIndex = i;
+            min = arr[i];
+        }
+    }
+    return minIndex;
+}
+
+
+
 var budgetController = {
 
     saveBudget: function(req,res) {
-        
+
         if(!req.session.user){
             console.log("Problem when accessing information of user");
             res.status(401).send();
@@ -63,7 +82,54 @@ var budgetController = {
             trip.budget.accommodation = meanBudgetAccommodation;
             trip.budget.on_the_spot = meanBudgetOnTheSpot;
             trip.budget.total = meanBudgetTotal;
-            
+
+
+            // budget badge
+            if(counterOfUsersWhoAlreadySetBudget == trip.users.length) {
+                var gap_transportation = [];
+                var gap_accommodation = [];
+                var gap_on_the_spot = [];
+                var gap_total = [];
+                var gap = [];
+
+
+                for(var i = 0; i < trip.users.length; i++) {
+                    gap_transportation[i] = Math.abs(meanBudgetTransportation - trip.users[i].budget.transportation);
+                    gap_accommodation[i] = Math.abs(meanBudgetAccommodation - trip.users[i].budget.accommodation);
+                    gap_on_the_spot[i] = Math.abs(meanBudgetOnTheSpot - trip.users[i].budget.on_the_spot);
+                    gap_total[i] = Math.abs(meanBudgetTotal - trip.users[i].budget.total);
+
+                    gap[i] = gap_transportation[i] + gap_accommodation[i] + gap_on_the_spot[i] + gap_total[i];
+
+                }
+                var index = indexOfMin(gap);
+                var user_id = trip.users[index]._id;
+                trip.badges.budget = user_id;
+
+                User.findOne({_id : user_id}, function(err, user) {
+                    if(err) {
+                        console.log(err);
+                        return res.status(500).send();
+                    }
+                    if(!user) {
+                        console.log('User not found');
+                        return res.status(404).send();
+                    }
+                    user.badges.budget += 1;
+                    user.save((err, result) => {
+                        if(err) {
+                            console.log(err);
+                            res.status(500).send("There is an error in modifiyng user in database");
+                        }
+                        else {
+                            console.log("User successfully modified");
+                            res.status(200).send();
+                        }
+                    })
+                })
+
+            }
+
             trip.save((err, result) => {
                 if(err) {
                     console.log('err: ', err);
@@ -79,7 +145,7 @@ var budgetController = {
 },
 
     getBudget: function(req,res) {
-            
+
         if(!req.session.user){
             console.log("Problem when accessing information of user");
             res.status(401).send();
@@ -101,7 +167,7 @@ var budgetController = {
                 else {
                     // res.status(404)
                     console.log('User not found in this trip');
-                }      
+                }
 
     }).catch((err) => {
         res.status(500).send(err)
@@ -111,10 +177,10 @@ var budgetController = {
     // estimateOnTheSpot : function(req, res){
 
     //     curl.get('http://www.numbeo.com:8008/api/country_indices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+country_name, options, function(err, response, body) {
-            
+
     //     });
     // }
-    
+
 };
 
 module.exports = budgetController;

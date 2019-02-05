@@ -46,7 +46,8 @@ var tripSchema = mongoose.Schema({
             accommodation: {type:Number, default: 0},
             on_the_spot: {type:Number, default: 0},
             total: {type:Number, default: 0}
-        }
+        },
+        points: {type:Number, default: 0}
     }],
     budget: {
         transportation: {type:Number, default: 0},
