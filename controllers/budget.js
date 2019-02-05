@@ -221,6 +221,7 @@ var budgetController = {
                     // ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
                 })
                 resolve(body);
+                
             })
         })
         
