@@ -16,7 +16,7 @@ var getIndex = function(arr, attr, value){
 }
 
 
-var indexOfMin = function(arr) {
+var indexOfMin = function(arr) { 
     if (arr.length === 0) {
         return -1;
     }
