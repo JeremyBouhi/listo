@@ -46,7 +46,7 @@ var userController = {
             {
                 res.status(200).send();
             }
-            
+
         })
 
 
@@ -232,6 +232,7 @@ var userController = {
       else
         res.status(200).send(req.session.user);
   },
+
 
   logOut: function(req, res) {
     if(!req.session.user){

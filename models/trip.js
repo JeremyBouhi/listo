@@ -1,8 +1,5 @@
 var mongoose = require('mongoose');
 
-// import dateSchema from './date';
-// import budgetSchema from './budget';
-
 var tripSchema = mongoose.Schema({
     name : {type : String, default: ''},
     date : {
@@ -30,15 +27,17 @@ var tripSchema = mongoose.Schema({
     admin : {type : String, default: ''},
     toDoList:[{
         description: {type:String, default: ''},
-        difficulty: {type:Number, default: ''},
+        difficulty: {type:Number, default: 0},
+        points: {type:Number, default: 0},
         status:{type:Boolean,default:false},
-        usersInvolved:[]
+        userInvolved:{type:String, default: ''}
     }],
     bringList:[{
         description: {type:String, default: ''},
         difficulty: {type:Number, default: 0},
+        points: {type:Number, default: 0},
         status:{type:Boolean,default:false},
-        usersInvolved:[]
+        userInvolved:{type:String, default: ''}
     }],
     users: [{
         budget: {
@@ -46,7 +45,8 @@ var tripSchema = mongoose.Schema({
             accommodation: {type:Number, default: 0},
             on_the_spot: {type:Number, default: 0},
             total: {type:Number, default: 0}
-        }
+        },
+        points: {type:Number, default: 0}
     }],
     budget: {
         transportation: {type:Number, default: 0},

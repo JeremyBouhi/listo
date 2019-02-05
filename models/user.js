@@ -18,8 +18,8 @@ var userSchema = mongoose.Schema({
         level4: {type:Boolean, default:false}, // Cannonier
         level5: {type:Boolean, default:false}, // Timonier (barreur)
         level6: {type:Boolean, default:false}, // Capitaine
-        level7: {type:Boolean, default:false},  // Barbe Noir
-        level_max: {type:Boolean, default:false} // Seigneur des pirates
+        level7: {type:Boolean, default:false}, // Barbe Noir
+        level8: {type:Boolean, default:false}  // Seigneur des pirates
     },
     progress: {type: Number, required:true},
     avatar: {type: Number, required:true},

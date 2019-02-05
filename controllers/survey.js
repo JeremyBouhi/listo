@@ -211,7 +211,7 @@ var surveyController = {
                 trip[req.params.typeSurvey].final_destination = req.body.destination_name
 
                 // get the id of the user who proposed the final destination
-                while (user_id == "undefined" || i<100){
+                while (user_id == "undefined" || i < 100){
                     if(trip[req.params.typeSurvey].survey[i].destination_name == req.body.destination_name){
                         user_id = trip[req.params.typeSurvey].survey[i].user_id;
                     }
@@ -245,15 +245,18 @@ var surveyController = {
 
             else if(req.params.typeSurvey == 'date')
             {
-                console.log('req.body: ', req.body);
-                trip[req.params.typeSurvey].final_start_date = req.body.start_date
-                trip[req.params.typeSurvey].final_end_date = req.body.end_date
-                console.log('trip[req.params.typeSurvey]: ', trip[req.params.typeSurvey]);
+                if(!req.body.start_date){
+                    console.log("req.body.date does not exist");
+                }
+                if(!trip[req.params.typeSurvey].final_start_date){
+                    console.log("trip.final does not exist");
+                }
+
+                trip[req.params.typeSurvey].final_start_date = req.body.start_date;
+                trip[req.params.typeSurvey].final_end_date = req.body.end_date;
 
                 // get the id of the user who proposed the final date
-                while (user_id == "undefined"){
-                    console.log('a');
-                    console.log(i);
+                while (user_id == "undefined" || i < 100){
                     if(trip[req.params.typeSurvey].survey[i].start_date == req.body.start_date && trip[req.params.typeSurvey].survey[i].end_date == req.body.end_date){
                         user_id = trip[req.params.typeSurvey].survey[i].user_id;
                     }
@@ -283,7 +286,7 @@ var surveyController = {
                     })
                 })
             }
-            trip[req.params.typeSurvey].validated = 1
+            trip[req.params.typeSurvey].validated = 1;
 
             console.log('trip: ', trip);
         trip.save((err, result) => {

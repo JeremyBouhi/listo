@@ -15,6 +15,7 @@ router.put('/:tripId/deleteTrip', tripController.deleteTrip);
 router.get('/:tripId', tripController.getTripInfo);
 router.get('/:tripId/isAdmin', tripController.isAdmin);
 router.get('/:tripId/getFinalDestination', tripController.getFinalDestination);
+router.put('/:tripId/endTrip', tripController.endTrip);
 
 router.put('/:tripId/addUser', groupController.addUser);
 router.get('/:tripId/getGroup', groupController.getGroup);
@@ -34,12 +35,14 @@ router.post('/:tripId/:typeSurvey/saveDeadline', surveyController.saveDeadline);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);
-router.get('/:tripId/getPriceItemByDestination/:destinations', budgetController.getPriceItemByDestination);
+//router.get('/:tripId/getPriceItemByDestination/:destinations', budgetController.getPriceItemByDestination);
 
 router.get('/:tripId/:typelist/get', listController.get);
 router.put('/:tripId/:typelist/add', listController.add);
 router.delete('/:tripId/:typelist/:idElement/delete', listController.delete);
 router.put('/:tripId/:typelist/:idElement/modify', listController.modify);
+
+
 
 
 //router.post('/:tripId/budget', tripController.budget);
