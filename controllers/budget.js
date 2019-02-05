@@ -206,7 +206,8 @@ var budgetController = {
 
     getPriceItemByDestination : async function(req, res){        
         
-            request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destination, 
+        var promise = new Promise(function(resolve, reject) {
+            return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destination, 
             res.header('Access-Control-Allow-Origin', req.headers.origin),
             function(err, response, body) {
                 if(err){
@@ -218,14 +219,18 @@ var budgetController = {
                 body.prices = body.prices.filter(function (el) {
                     return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
                     // ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
-                }).catch((err) => {
-                    console.log('err: ', err);
-                    res.status(500);
-                });
-                console.log('body: ', body);
-                res.status(200).send(body);
+                })
+                resolve(body);
             })
-            
+        })
+        
+        promise.then((result)=> {
+            console.log('result: ', result);
+            res.status(200).send(result);
+        }).catch((err)=> {
+            console.log('err: ', err);
+            res.status(500);
+        })            
             
     }
 }
