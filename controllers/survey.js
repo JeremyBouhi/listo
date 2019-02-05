@@ -211,7 +211,7 @@ var surveyController = {
                 trip[req.params.typeSurvey].final_destination = req.body.destination_name
 
                 // get the id of the user who proposed the final destination
-                while (user_id == "undefined"){
+                while (user_id == "undefined" || i<100){
                     if(trip[req.params.typeSurvey].survey[i].destination_name == req.body.destination_name){
                         user_id = trip[req.params.typeSurvey].survey[i].user_id;
                     }
