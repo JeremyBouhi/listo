@@ -35,7 +35,7 @@ router.post('/:tripId/:typeSurvey/saveDeadline', surveyController.saveDeadline);
 
 router.put('/:tripId/saveBudget', budgetController.saveBudget);
 router.get('/:tripId/getBudget', budgetController.getBudget);
-//router.get('/:tripId/getPriceItemByDestination/:destinations', budgetController.getPriceItemByDestination);
+router.get('/:tripId/getPriceItemByDestination/:destination', budgetController.getPriceItemByDestination);
 
 router.get('/:tripId/:typelist/get', listController.get);
 router.put('/:tripId/:typelist/add', listController.add);

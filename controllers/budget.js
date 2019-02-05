@@ -1,6 +1,7 @@
 import Trip from './../models/trip'
 import User from './../models/user'
 // var curl = require('curl')
+var request = require('request-promise')
 
 var getIndex = function(arr, attr, value){
     var i = arr.length;
@@ -174,33 +175,49 @@ var budgetController = {
     })
 },
 
+    // getPricesItemsByDestination : async function(req, res){        
+        
+    //     var destinations = req.params.destinations.split(',');
+    //     console.log('destinations: ', destinations);
+    //     var promises = await destinations.map((destination) => {
+    //         console.log('destination: ', destination);
+    //         return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, 
+    //         res.header('Access-Control-Allow-Origin', req.headers.origin),
+    //         function(err, response, body) {
+    //             return(body);
+    //         })
+    //     })
+        
+    //     Promise.all(promises).then(function(countries) {
+            
+    //         var tonton = countries.map((country)=>{
+    //             country = JSON.parse(country)
+    //             country.prices = country.prices.filter(function (el) {
+    //                 return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
+    //                 // ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
+    //             });
+    //             return country;
+    //         })
+            
+    //         console.log('tonton: ', tonton);
+    //         res.status(200).send(tonton);
+    //     })    
+    // },
+
     getPriceItemByDestination : async function(req, res){        
         
-        var destinations = req.params.destinations.split(',');
-        console.log('destinations: ', destinations);
-        var promises = await destinations.map((destination) => {
-            console.log('destination: ', destination);
-            return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+destination, 
+            request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destination, 
             res.header('Access-Control-Allow-Origin', req.headers.origin),
             function(err, response, body) {
-                return(body);
-            })
-        })
-        
-        Promise.all(promises).then(function(countries) {
-            
-            var tonton = countries.map((country)=>{
-                country = JSON.parse(country)
-                country.prices = country.prices.filter(function (el) {
+                body = JSON.parse(body)
+                body.prices = body.prices.filter(function (el) {
                     return el.item_id == 1 || el.item_id == 3 || el.item_id == 4 || el.item_id == 14 || el.item_id == 18
                     // ids = domac :3, la pinte:4, bottleOfWine:14, localChesse: 12, repas dans un bon restau : 1, one-way ticket: 18
                 });
-                return country;
+                res.status(200).send(body);
             })
             
-            console.log('tonton: ', tonton);
-            res.status(200).send(tonton);
-        })    
+            
     }
 }
 
