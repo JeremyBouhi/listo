@@ -209,6 +209,10 @@ var budgetController = {
             request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destination, 
             res.header('Access-Control-Allow-Origin', req.headers.origin),
             function(err, response, body) {
+                if(err){
+                    console.log(err);
+                    res.status(500);
+                }
                 console.log('body: ', body);
                 body = JSON.parse(body)
                 body.prices = body.prices.filter(function (el) {
