@@ -61,41 +61,6 @@ var indexOfMax = function(arr) {
     return maxIndex;
 }
 
-// function getUserName(id, callback) {
-//   callback(id);
-// }
-
-var getUserName = async function(id) {
-    await User.findOne({_id: id}, function(err, user) {
-        if(err) {
-            console.log(err);
-        }
-        if(!user) {
-            console.log("User not found")
-        }
-        else {
-            return user.username;
-        }
-    })
-
-}
-
-
-var getUserEmail = async function(id) {
-    await User.findOne({_id: id}, function(err, user) {
-        if(err) {
-            console.log(err);
-        }
-        if(!user) {
-            console.log("User not found")
-        }
-        else {
-            console.log("Email returned : ",user.email)
-            return user.email;
-        }
-    })
-}
-
 
 
 var tripController = {
@@ -396,28 +361,24 @@ var tripController = {
             // var username_destination = getUserName(trip.badges.destination);
             await User.findOne({_id: trip.badges.destination}, function(err, user) {
                 username_destination = user.username;
-                console.log("Destination : ", username_destination);
             })
 
             // Date
             // var username_date = getUserName(trip.badges.date);
             await User.findOne({_id: trip.badges.date}, function(err, user) {
                 username_date = user.username;
-                console.log("Date : ", username_date);
             })
 
             // Budget
             // var username_budget = getUserName(trip.badges.budget);
             await User.findOne({_id: trip.badges.budget}, function(err, user) {
                 username_budget = user.username;
-                console.log("Budget : ", username_budget);
             })
 
             // Admin
             // var username_admin = getUserName(trip.badges.admin);
             await User.findOne({_id: trip.badges.admin}, function(err, user) {
                 username_admin = user.username;
-                console.log("Admin : ", username_admin);
             })
 
             var username;
@@ -438,7 +399,6 @@ var tripController = {
 
 
                 await readHTMLFile('./templates/emailEnd.html', function(err, html) {
-                    console.log("readHTMLFile");
                     var template = handlebars.compile(html);
                     var replacements = {
                          username_winner: username_winner,
