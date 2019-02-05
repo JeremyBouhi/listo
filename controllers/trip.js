@@ -249,11 +249,13 @@ var tripController = {
 
             trip.save((err, result) => {
                 if(err) {
+                    res.status(200);
                     console.log(err);
                 }
             });
     
             }).catch((err) => {
+                res.status(500);
                 console.log(err);})
     }
 };

@@ -245,17 +245,22 @@ var surveyController = {
 
             else if(req.params.typeSurvey == 'date')
             {
+                console.log('req.body: ', req.body);
                 trip[req.params.typeSurvey].final_start_date = req.body.start_date
                 trip[req.params.typeSurvey].final_end_date = req.body.end_date
+                console.log('trip[req.params.typeSurvey]: ', trip[req.params.typeSurvey]);
 
                 // get the id of the user who proposed the final date
                 while (user_id == "undefined"){
+                    console.log('a');
+                    console.log(i);
                     if(trip[req.params.typeSurvey].survey[i].start_date == req.body.start_date && trip[req.params.typeSurvey].survey[i].end_date == req.body.end_date){
                         user_id = trip[req.params.typeSurvey].survey[i].user_id;
                     }
                     i += 1;
                 }
                 trip.badges.date = user_id;
+                console.log('trip.badges: ', trip.badges);
                 User.findOne({_id : user_id}, function(err, user) {
                     if(err) {
                         console.log(err);
@@ -280,19 +285,18 @@ var surveyController = {
             }
             trip[req.params.typeSurvey].validated = 1
 
+            console.log('trip: ', trip);
         trip.save((err, result) => {
             if(err) {
                     res.status(500).send(err);
                     }
                 else {
                     tripController.updateState(req, res)
-                    res.status(200)
+                    // res.status(200)
                 };
             });
         }).catch((err) => {
             res.status(500).send(err)})
-
-            
     },
 
     saveDeadline: function(req, res){
