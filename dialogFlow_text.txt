@@ -1,0 +1,5 @@
+
+Ok Google, lance l'application Listo
+j'aimerais créer un nouveau voyage #name_trip
+Je souhaite aller à #name
+Les dates pour le voyage sont du #startDate au #endDate

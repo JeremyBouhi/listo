@@ -37,9 +37,10 @@ var surveyController = {
             res.status(401).send();
         }
 
+        console.log("req.params : "+req.params);
+
         Trip.findOne({_id : req.params.tripId
         }).then((trip) => {
-
             console.log('trip: ', trip);
             console.log('req.params.typeSurvey: ', req.params.typeSurvey);
         if(req.params.typeSurvey == 'destination')
@@ -62,15 +63,23 @@ var surveyController = {
                 console.log(err)
                 res.status(500).send("There is an error in adding new destination in database");
             }
-
-            else res.status(200).send();
             console.log('trip[req.params.typeSurvey].survey: ', trip[req.params.typeSurvey].survey);
         });
 
         }).catch((err) => {
             console.log('err: ', err);
             res.status(500).send('ça marche despi')})
-    },
+            if('queryResult' in req.body)
+            {
+                if("name_destination" in req.body.queryResult.parameters)
+                    res.status(200).send(JSON.stringify({"fulfillmentText":"La destination "+req.body.destination_name+" a été ajoutée. Quels sont les dates vous conviendraient?"}));
+                else if("startDate" in req.body.queryResult.parameters)
+                    res.status(200).send(JSON.stringify({"fulfillmentText":"Les dates ont été ajoutées"}));
+            }
+            
+            else
+                res.status(200).send();
+            },
 
     // addVote : function(req, res){
     //     // we add the user_id to the array

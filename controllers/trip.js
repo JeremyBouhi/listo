@@ -114,9 +114,25 @@ var tripController = {
                 {
                     if("queryResult" in req.body)
                     {
-                var speech = "Le voyage "+name+ "a été créé";
-                res.json({
-                    "fulfillmentText": speech
+                        console.log(user);
+                        var speech1 = "Le voyage "+name+ " a été créé";
+                        var speech2 = "A quel destination souhaitez-vous vous rendre?";
+                        res.json({
+                            "fulfillmentText": speech1+". "+speech2,
+                            "outputContexts": [
+                                {
+                                  "name": req.body.session+"/contexts/session",
+                                  "lifespanCount": 50,
+                                  "parameters": {
+                                    "param": user
+                                  },
+                                  "name": req.body.session+"/contexts/trip",
+                                  "lifespanCount": 50,
+                                  "parameters": {
+                                    "param": trip
+                                  }
+                                }
+                              ],
                         });
                     }
                     else
