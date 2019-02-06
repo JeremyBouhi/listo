@@ -227,18 +227,19 @@ var surveyController = {
                 {
                     res.status(500).send("Couldn't find data with this element_index")
                 }
-
-        }).catch((err) => {
-            console.log('err: ', err);
-            res.status(500).send('ça marche despi')})
-    },
-
-    validateData : function(req, res){
-        if(!req.session.user){
-            console.log("Problem when accessing information of user");
-            res.status(401).send();
-        }
-
+                
+            }).catch((err) => {
+                console.log('err: ', err);
+                res.status(500).send('ça marche despi')})
+            },
+            
+            validateData : function(req, res){
+                if(!req.session.user){
+                    console.log("Problem when accessing information of user");
+                    res.status(401).send();
+                }
+                
+        console.log('req.body: ', req.body);
         var user_id = "undefined";
         var i = 0;
 
@@ -450,7 +451,8 @@ var surveyController = {
 
         trip.save((err, result) => {
             if(err) {
-                    res.status(500).send(err);
+                    res.status(500);
+                    console.log('err: ', err);
                     }
                 else {
                     tripController.updateState(req, res)
@@ -458,7 +460,8 @@ var surveyController = {
                 };
             });
         }).catch((err) => {
-            res.status(500).send(err)})
+            console.log('err: ', err);
+            res.status(500)})
     },
 
     saveDeadline: function(req, res){
