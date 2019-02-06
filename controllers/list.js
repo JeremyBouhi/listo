@@ -2,8 +2,37 @@ import Trip from '../models/trip'
 import User from '../models/user'
 import { callbackify } from 'util';
 
+// Level setup
 var level_up = [500,1000,2000,5000,10000,20000,50000];
 var level_name = ["Marin d'eau douce", "Moussaillon", "Vigie", "Cannonier", "Timonier", "Capitaine", "Barbe Noir", "Seigneur des Pirates"];
+
+// Mail setup
+var nodemailer     = require('nodemailer');
+var handlebars     = require('handlebars');
+var fs             = require('fs');
+
+var transporter = nodemailer.createTransport({
+ service: 'gmail',
+ auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+    }
+});
+
+
+var readHTMLFile = function(path, callback) {
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+            throw err;
+            callback(err);
+        }
+        else {
+            callback(null, html);
+        }
+    });
+};
+
+
 
 var listController = {
     add: function (req, res) {
@@ -91,7 +120,6 @@ var listController = {
 
                     // Points given to the user who did the task
                     if(element.status == false && req.body.status == true){
-
                         User.findOne({_id: element.userInvolved}, function(err, user) {
                             if(err) {
                                 console.log(err);
@@ -105,13 +133,43 @@ var listController = {
                             console.log("Progress : ",user.progress);
                             if(user.progress >= level_up[user.avatar-1]){
                                 var remainder = user.progress - level_up[user.avatar-1];
+                                var level = "level" + user.avatar.toString();
                                 user.avatar ++;
                                 user.level = level_name[user.avatar-1];
                                 user.progress = remainder;
-                                var level = "level" + avatar.toString();
-                                trip.badges[level] = true;
-                                //user.badges.level.push(true);
+                                user.badges[level] = true;
+                                console.log("Trip badge " + level + " : " + user.badges[level]);
                                 console.log("Level up ! New level : ",user.level);
+
+
+                                // Send email to user
+
+                                readHTMLFile('./templates/emailLevelUp.html', function(err, html) {
+                                    var template = handlebars.compile(html);
+                                    var replacements = {
+                                         username: user.username,
+                                         level: user.level
+                                    };
+                                    var htmlToSend = template(replacements);
+                                    var mailOptions = {
+                                        from: 'noreply.listo@gmail.com',
+                                        to : user.email,
+                                        subject : "Tu as gagné une promotion bien méritée " + user.username +' !',
+                                        html : htmlToSend,
+                                        attachments: [{
+                                            filename: 'logo.png',
+                                            path: './images/logo.png',
+                                            cid: 'logo' //same cid value as in the html img src
+                                        }]
+                                     };
+
+                                     transporter.sendMail(mailOptions, function (err, info) {
+                                        if(err)
+                                          console.log(err)
+                                        else
+                                          console.log('Message sent: ' + info.response);
+                                     });
+                                });
                             }
 
                             user.save(function (err, updatedUser) {
@@ -125,9 +183,20 @@ var listController = {
                                 }
                             })
                         })
+                        trip.users.find(x => x._id == element.userInvolved).points += element.points;
+                        var ranking = [];
+                        trip.users.forEach((item)=> {
+                            ranking.push({_id: item._id, points: item.points});
+                        });
+                        trip.ranking = ranking.sort(function (a, b) {
+                            return b.points - a.points;
+                        });
+                        console.log("Trip Ranking : ",trip.ranking);
+
                     }
                     element.status=req.body.status;
                     element.userInvolved=req.body.userInvolved;
+
                     console.log(element);
                 }
             });
@@ -145,8 +214,11 @@ var listController = {
             });
         })
     },
+
+
     get : function (req, res) {
-        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+
+        Trip.findOne({_id : req.params.tripId}, async function(err, trip) {
             if(err) {
                 console.log(err);
                 return res.status(500).send();
@@ -155,10 +227,24 @@ var listController = {
                 console.log("Trip not found...")
                 return res.status(404).send();
             }
+            for(const item of trip[req.params.typelist]){
+                await User.findOne({_id:item.userInvolved}, function(err, user) {
+                    if(err) {
+                        console.log(err);
+                    }
+
+                    if(!user) {
+                        console.log("User "+ item.userInvolved + " not found...");
+                    }
+
+                }).then((user)=>{
+                    item.userInvolved = user.username;
+                    console.log("Element in toDo list : ",item.userInvolved);
+                });
+            }
+
             console.log("Sending list..")
             res.status(200).send(trip[req.params.typelist]);
-            // renvoyer username au lieu de l'id
-
         })
     }
 };

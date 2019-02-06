@@ -21,7 +21,7 @@ var tripSchema = mongoose.Schema({
         final_destination: {type : String, default: ''},
         survey: [{
             destination_name: {type : String, default: ''},
-            user_id: []
+            user_id: String
         }]
     },
     admin : {type : String, default: ''},
@@ -62,7 +62,9 @@ var tripSchema = mongoose.Schema({
         budget:{type:String, default:''},
         admin:{type:String, default:''}
     },
-    state: {type:Number, default: 0}
+    state: {type:Number, default: 0},
+    ranking:[]
+
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
