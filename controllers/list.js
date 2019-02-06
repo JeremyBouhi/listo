@@ -95,7 +95,7 @@ var listController = {
     },
 
     modify : function (req, res) {
-        Trip.findOne({_id : req.params.tripId}, function(err, trip) {
+        Trip.findOne({_id : req.params.tripId}, async function(err, trip) {
             if(err) {
                 console.log(err);
                 return res.status(500).send();
@@ -184,22 +184,33 @@ var listController = {
                             })
                         })
                         trip.users.find(x => x._id == element.userInvolved).points += element.points;
-                        var ranking = [];
-                        trip.users.forEach((item)=> {
-                            ranking.push({_id: item._id, points: item.points});
-                        });
-                        trip.ranking = ranking.sort(function (a, b) {
-                            return b.points - a.points;
-                        });
-                        console.log("Trip Ranking : ",trip.ranking);
-
                     }
                     element.status=req.body.status;
                     element.userInvolved=req.body.userInvolved;
 
-                    console.log(element);
+
                 }
             });
+
+            var ranking = [];
+            for(const item of trip.users){
+                await User.findOne({_id: item._id}, function(err, user) {
+                    if(err) {
+                        console.log(err);
+                    }
+                    if(!user) {
+                        console.log("User "+ item.userInvolved + " not found...");
+                    }
+                }).then((user)=>{
+                    ranking.push({username: user.username, avatar: user.avatar, points: item.points});
+                    console.log("User " + user.username + " added with " + item.points + " points to the ranking array");
+                });
+            }
+
+            trip.ranking = ranking.sort(function (a, b) {
+                return b.points - a.points;
+            });
+            console.log("Trip Ranking : ",trip.ranking);
 
             trip.save(function (err, updatedTrip) {
                 if(err) {
