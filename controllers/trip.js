@@ -2,6 +2,10 @@ import Trip from './../models/trip'
 import User from './../models/user'
 import Waiting from './../models/waiting'
 
+// Level setup
+var level_up = [500,1000,2000,5000,10000,20000,50000];
+var level_name = ["Marin d'eau douce", "Moussaillon", "Vigie", "Cannonier", "Timonier", "Capitaine", "Barbe Noir", "Seigneur des Pirates"];
+
 // Mail setup
 var nodemailer     = require('nodemailer');
 var handlebars     = require('handlebars');
@@ -303,6 +307,7 @@ var tripController = {
             var user_id_loser = trip.users[index_loser]._id;
             var username_winner;
             var username_loser;
+            var bonus_points_winner = 500;
 
             trip.badges.winner = user_id_winner;
             trip.badges.loser = user_id_loser;
@@ -318,6 +323,51 @@ var tripController = {
                 }
                 username_winner = user.username;
                 user.badges.winner += 1;
+                console.log("Old progress : ",user.progress);
+                user.progress += bonus_points_winner;
+                console.log("New progress : ",user.progress);
+
+                // If level up
+                if(user.progress >= level_up[user.avatar-1]){
+                    var remainder = user.progress - level_up[user.avatar-1];
+                    var level = "level" + user.avatar.toString();
+                    user.avatar ++;
+                    user.level = level_name[user.avatar-1];
+                    user.progress = remainder;
+                    user.badges[level] = true;
+                    console.log("Trip badge " + level + " : " + user.badges[level]);
+                    console.log("Level up ! New level : ",user.level);
+
+                    // Send email to user
+
+                    readHTMLFile('./templates/emailLevelUp.html', function(err, html) {
+                        var template = handlebars.compile(html);
+                        var replacements = {
+                             username: user.username,
+                             level: user.level
+                        };
+                        var htmlToSend = template(replacements);
+                        var mailOptions = {
+                            from: 'noreply.listo@gmail.com',
+                            to : user.email,
+                            subject : "Tu as gagné une promotion bien méritée " + user.username +' !',
+                            html : htmlToSend,
+                            attachments: [{
+                                filename: 'logo.png',
+                                path: './images/logo.png',
+                                cid: 'logo' //same cid value as in the html img src
+                            }]
+                         };
+
+                         transporter.sendMail(mailOptions, function (err, info) {
+                            if(err)
+                              console.log(err)
+                            else
+                              console.log('Message sent: ' + info.response);
+                         });
+                    });
+                }
+
                 user.save((err, result) => {
                     if(err) {
                         console.log(err);
@@ -352,33 +402,41 @@ var tripController = {
                     }
                 })
             })
-            var username_destination;
-            var username_date;
-            var username_budget;
-            var username_admin;
+            var username_destination = "undefined";
+            var username_date = "undefined";
+            var username_budget = "undefined";
+            var username_admin = "undefined";
 
             // Destination
             // var username_destination = getUserName(trip.badges.destination);
             await User.findOne({_id: trip.badges.destination}, function(err, user) {
+                if(user){
                 username_destination = user.username;
+                }
             })
 
             // Date
             // var username_date = getUserName(trip.badges.date);
             await User.findOne({_id: trip.badges.date}, function(err, user) {
+                if(user){
                 username_date = user.username;
+                }
             })
 
             // Budget
             // var username_budget = getUserName(trip.badges.budget);
             await User.findOne({_id: trip.badges.budget}, function(err, user) {
+                if(user){
                 username_budget = user.username;
+                }
             })
 
             // Admin
             // var username_admin = getUserName(trip.badges.admin);
             await User.findOne({_id: trip.badges.admin}, function(err, user) {
+                if(user){
                 username_admin = user.username;
+                }
             })
 
             var username;
