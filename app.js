@@ -93,7 +93,6 @@ app.get('/:tripId/:topic/chat', function(req, res){
     res.sendFile(__dirname + '/index.html');
   });
       
-
 // Catch errors
 store.on('error', function(error) {
     assert.ifError(error);
