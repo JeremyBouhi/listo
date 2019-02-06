@@ -21,6 +21,8 @@ router.post("/", function(req, res) {
         email=email.replace("arobase","@");
         email=email.replace("point",".");
         email=email.toLowerCase();
+        email=email.replace("ronsard","rossard");
+        email=email.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
         console.log("email : "+email);
         req.body.email=email;
         userController.loginDialogflow(req,res);

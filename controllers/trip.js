@@ -110,9 +110,9 @@ var tripController = {
                     console.log("There is an error in modifying user in database");
                     res.status(500).send();
                 }
-                else
-                {
-                    if("queryResult" in req.body)
+
+            })
+            if("queryResult" in req.body)
                     {
                         console.log(user);
                         var speech1 = "Le voyage "+name+ " a été créé";
@@ -135,13 +135,10 @@ var tripController = {
                               ],
                         });
                     }
-                    else
-                    {
-                        res.status(200).send();
-                    }
+                else
+                {
+                    res.status(200).send();
                 }
-
-            })
         })
     },
 

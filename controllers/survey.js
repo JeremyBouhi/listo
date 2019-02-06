@@ -74,7 +74,7 @@ var surveyController = {
                 if("name_destination" in req.body.queryResult.parameters)
                     res.status(200).send(JSON.stringify({"fulfillmentText":"La destination "+req.body.destination_name+" a été ajoutée. Quels sont les dates vous conviendraient?"}));
                 else if("startDate" in req.body.queryResult.parameters)
-                    res.status(200).send(JSON.stringify({"fulfillmentText":"Les dates ont été ajoutées"}));
+                    res.status(200).send(JSON.stringify({"fulfillmentText":"Les dates ont été ajoutées. Rendez vous sur Listo afin de constituer votre équipage"}));
             }
             
             else
