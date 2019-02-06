@@ -393,11 +393,6 @@ var tripController = {
                     email = user.email;
                 })
 
-
-                console.log("Email : ", email);
-                console.log("Username : ", username);
-
-
                 await readHTMLFile('./templates/emailEnd.html', function(err, html) {
                     var template = handlebars.compile(html);
                     var replacements = {
