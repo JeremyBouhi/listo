@@ -56,7 +56,7 @@ var tripController = {
                         var speech1 = "Le voyage "+name+ " a été créé";
                         var speech2 = "A quel destination souhaitez-vous vous rendre?";
                         res.json({
-                            "fulfillmentText": speech1+"."+speech2,
+                            "fulfillmentText": speech1+". "+speech2,
                             "outputContexts": [
                                 {
                                   "name": req.body.session+"/contexts/session",

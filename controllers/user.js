@@ -171,7 +171,7 @@ var userController = {
             //dialogflow response
             if("queryResult" in req.body)
             {
-                var speech = "Bienvenue sur Listo "+user.username+".Quel nom de trip souhaitez-vous choisir?";
+                var speech = "Bienvenue sur Listo "+user.username+". Quel nom souhaitez-vous donner à votre voyage?";
                 res.json({
                     "fulfillmentText": speech,
                     "outputContexts": [

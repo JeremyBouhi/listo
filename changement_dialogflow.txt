@@ -1,0 +1,6 @@
+Welcome Intent : Ou souhaitez-vous partir moussaillons ? 
+
+Pouvez-vous me donner votre adresse email s'il vous plait? + rajouter context login
+
+
+enlever "set this intent as end of conversation
