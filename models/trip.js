@@ -24,7 +24,7 @@ var tripSchema = mongoose.Schema({
         final_destination: {type : String, default: ''},
         survey: [{
             destination_name: {type : String, default: ''},
-            user_id: []
+            user_id: String
         }]
     },
     admin : {type : String, default: ''},
