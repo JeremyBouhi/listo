@@ -25,6 +25,7 @@
     "fs": "0.0.1-security",
     "handlebars": "^4.0.12",
     "http": "0.0.0",
+    "localtunnel": "^1.9.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.4.2",
     "nodemailer": "^5.1.1",

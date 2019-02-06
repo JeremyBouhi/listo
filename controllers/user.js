@@ -156,7 +156,7 @@ var userController = {
                 console.log('User not found');
                 return res.send(JSON.stringify({
 
-                    fulfillmentText:"L'email "+email+"n'a pas été trouvé. Pouvez-vous le répétez s'il vous plait?",
+                    fulfillmentText:"L'email "+email+" n'a pas été trouvé. Pouvez-vous le répétez s'il vous plait?",
                     outputContexts: [
                         {
                           "name": req.body.session+"/contexts/login",
