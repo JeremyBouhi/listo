@@ -448,7 +448,6 @@ var surveyController = {
             });
             console.log("Trip Ranking : ",trip.ranking);
 
-
         trip.save((err, result) => {
             if(err) {
                     res.status(500).send(err);
