@@ -206,6 +206,7 @@ var budgetController = {
 
     getPriceItemByDestination : async function(req, res){        
         
+        
         var promise = new Promise(function(resolve, reject) {
             return request.get('http://www.numbeo.com:8008/api/country_prices?api_key='+ process.env.API_KEY_NUMBEO +'&country='+req.params.destination, 
             res.header('Access-Control-Allow-Origin', req.headers.origin),
