@@ -174,7 +174,6 @@ var budgetController = {
         res.status(500).send(err)
     })
 },
-
     // getPricesItemsByDestination : async function(req, res){        
         
     //     var destinations = req.params.destinations.split(',');
