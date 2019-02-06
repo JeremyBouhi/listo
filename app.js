@@ -161,7 +161,6 @@ app.use('/trips', tripRoutes);
 app.use('/overview', overviewRoutes);
 app.use('/dialogflow', dialogflowRoute);
 
-
 // shoutout to the user
 console.log('RDV au port ' + port);
 
