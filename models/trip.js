@@ -64,7 +64,9 @@ var tripSchema = mongoose.Schema({
         loser:{type:String, default:''},
         budget:{type:String, default:''},
         admin:{type:String, default:''}
-    }
+    },
+    ranking:[]
+
 });
 
 var Trip =  mongoose.model('Trip', tripSchema);
