@@ -104,7 +104,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 app.use(cors({
-    origin:['http://localhost:4200'],
+    origin:['http://localhost:4200', 'https://listo-web.herokuapp.com'],
     credentials: true // enable set cookie
 }));
 
