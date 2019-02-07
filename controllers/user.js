@@ -68,9 +68,7 @@ var userController = {
                     console.log('%s is on waiting list for trip id %s',waiting.email,waiting.trip);
                     waiting_id = waiting._id;
 
-
-
-                    Trip.findOne({_id : waiting.trip}, function(err, trip){
+                    Trip.findOne({_id : waiting.trip}, async function(err, trip){
 
                             if(err) {
                                 console.log(err);
@@ -85,6 +83,29 @@ var userController = {
 
                             trip.users.push(user_id);
                             console.log("User added to trip %s ", trip.name);
+
+
+                            // Update trip ranking :
+
+                            var ranking = [];
+                            for(const item of trip.users){
+                                await User.findOne({_id: item._id}, function(err, user) {
+                                    if(err) {
+                                        console.log(err);
+                                    }
+                                    if(!user) {
+                                        console.log("User not found...");
+                                    }
+                                }).then((user)=>{
+                                    ranking.push({username: user.username, avatar: user.avatar, points: item.points});
+                                    console.log("User " + user.username + " added with " + item.points + " points to the ranking array");
+                                });
+                            }
+
+                            trip.ranking = ranking.sort(function (a, b) {
+                                return b.points - a.points;
+                            });
+                            console.log("Trip ranking updated");
 
                             trip.save(function (err, updatedTrip) {
                                 if(err) {

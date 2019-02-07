@@ -352,6 +352,8 @@ var surveyController = {
                     i += 1;
                 }
 
+    
+
                 trip.badges.date = user_id;
                 var bonus_points_date = 250;
 

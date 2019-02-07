@@ -69,7 +69,7 @@ var indexOfMax = function(arr) {
 
 var tripController = {
 
-    createTrip : function(req, res) {
+    createTrip : async function(req, res) {
         if(!req.session.user) {
            console.log('You are not logged')
            return res.status(401).send();
@@ -82,6 +82,7 @@ var tripController = {
         trip.admin = admin;
         trip.badges.admin = admin;
         trip.users.push(admin.toString());
+        trip.ranking.push({username: req.session.user.username, avatar: req.session.user.avatar, points: 0});
 
         trip.save((err, result) => {
             if(err) {
